@@ -32,7 +32,7 @@ export const AddVendor = () => {
 
   const [message, setMessage] = useState("")
 
-  const LogoutData = localStorage.getItem("login");
+  const token = localStorage.getItem("token");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -50,7 +50,7 @@ export const AddVendor = () => {
       method: "POST",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${LogoutData}`,
+        Authorization: `Bearer ${token}`,
       },
       body: formDataMethod, // Use the FormData object as the request body
     })

@@ -19,7 +19,7 @@ export const AddUser = () => {
 
 
     const fectchBrandData = () => {
-        const LogoutData = localStorage.getItem('login');
+        const token = localStorage.getItem("token");
         document.querySelector('.loaderBox').classList.remove("d-none");
 
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/role-listing',
@@ -28,7 +28,7 @@ export const AddUser = () => {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${LogoutData}`
+                    'Authorization': `Bearer ${token}`
                 },
             }
         )
@@ -49,7 +49,7 @@ export const AddUser = () => {
 
 
     const fetchUnitData = () => {
-        const LogoutData = localStorage.getItem('login');
+        const token = localStorage.getItem("token");
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
             {
@@ -57,7 +57,7 @@ export const AddUser = () => {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${LogoutData}`
+                    'Authorization': `Bearer ${token}`
                 },
             }
         )
@@ -78,7 +78,7 @@ export const AddUser = () => {
 
 
 
-    const LogoutData = localStorage.getItem('login');
+    const token = localStorage.getItem("token");
 
 
     const handleSubmit = (event) => {
@@ -97,7 +97,7 @@ export const AddUser = () => {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${LogoutData}`
+                'Authorization': `Bearer ${token}`
             },
             body: formDataMethod // Use the FormData object as the request body
         })

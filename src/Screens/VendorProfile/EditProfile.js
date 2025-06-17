@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
-import { country, currentUser } from "./../../Config/Data";
+import { country, currentUser } from "../../Config/Data";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
@@ -16,7 +16,7 @@ import CustomModal from "../../Components/CustomModal";
 import placeholderimage from '../../Assets/images/placeholderimage.png'
 import './style.css'
 
-const EditProfile = () => {
+const EditVendorProfile = () => {
 
     const apiUrl = process.env.REACT_APP_BASE_URL;
     const imageUrl = process.env.REACT_APP_BASE_IMAGE_URL;
@@ -52,7 +52,7 @@ const EditProfile = () => {
     const PrfileDetail = () => {
         const token = localStorage.getItem("token");
         document.querySelector(".loaderBox").classList.remove("d-none");
-        fetch(`${apiUrl}/profile-edit`, {
+        fetch(`${apiUrl}/${role == 0 ? 'profile-edit': 'vendor/profile-edit'}`, {
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -249,4 +249,4 @@ const EditProfile = () => {
     );
 };
 
-export default EditProfile;
+export default EditVendorProfile;

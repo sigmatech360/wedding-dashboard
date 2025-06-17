@@ -17,14 +17,14 @@ export const Dashboard = () => {
   const [users, setUsers] = useState('');
   const [programs, setPrograms] = useState('');
   const [sponsors, setSponsors] = useState('');
-  const  fetchVendor = (LogoutData) =>{
+  const  fetchVendor = (token) =>{
     let url = `${process.env.REACT_APP_BASE_URL}/all-vendor`
       fetch(url, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
+          'Authorization': `Bearer ${token}`
         },
       }).then(res => res.json())
       .then((data)=>{
@@ -36,14 +36,14 @@ export const Dashboard = () => {
       })
 
   }
-  const  fetchUser = (LogoutData) =>{
+  const  fetchUser = (token) =>{
     let url = `${process.env.REACT_APP_BASE_URL}/all-users`
       fetch(url, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
+          'Authorization': `Bearer ${token}`
         },
       }).then(res => res.json())
       .then((data)=>{
@@ -58,9 +58,9 @@ export const Dashboard = () => {
   
   useEffect(()=>{
     try {
-      const LogoutData = localStorage.getItem("login");
-      fetchVendor(LogoutData);
-      fetchUser(LogoutData);
+      const token = localStorage.getItem("token");
+      fetchVendor(token);
+      fetchUser(token);
     } catch (error) {
       
     }

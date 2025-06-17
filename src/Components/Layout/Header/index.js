@@ -17,6 +17,8 @@ import {
 import { notifications } from "../../../Config/Data";
 
 import "./style.css";
+import { useDispatch } from "react-redux";
+import { setLogout } from "../../../store/slices/user";
 
 
 export const Header = (props) => {
@@ -24,8 +26,10 @@ export const Header = (props) => {
   const [notificationState, setNotificationState] = useState([])
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
+  const [role,setRole] = useState();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const Continue = () => {
     setShowModal(false)
@@ -37,14 +41,14 @@ export const Header = (props) => {
   }
 
   const handleRedirect = () => {
-    const LogoutData = localStorage.getItem('login');
+    const token = localStorage.getItem("token");
     fetch(`${process.env.REACT_APP_BASE_URL}/logout`,
       {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
+          'Authorization': `Bearer ${token}`
         },
       },
     )
@@ -53,7 +57,7 @@ export const Header = (props) => {
       })
       .then((data) => {
         console.log(data)
-        localStorage.removeItem('login');
+        dispatch(setLogout)
         navigate('/');
       })
       .catch((error) => {
@@ -68,6 +72,7 @@ export const Header = (props) => {
 
   useEffect(() => {
     setNotificationState(notifications)
+    setRole(localStorage.getItem("role"))
   }, [])
 
 
@@ -75,20 +80,22 @@ export const Header = (props) => {
 
 
   const PrfileDetail = () => {
-    const LogoutData = localStorage.getItem("login");
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role")
     document.querySelector(".loaderBox").classList.remove("d-none");
-    fetch(`${apiUrl}/profile-edit`, {
+    fetch(`${apiUrl}/${role == 0 ? 'profile-edit': 'vendor/profile-edit'}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${LogoutData}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data?.data);
         document.querySelector(".loaderBox").classList.add("d-none");
+        console.log('header usre data', data?.data);
+        
         setUserData(data?.data);
       })
       .catch((error) => {

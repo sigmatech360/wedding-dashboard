@@ -35,7 +35,7 @@ export const VendorDetail = () => {
   };
 
   useEffect(() => {
-    const LogoutData = localStorage.getItem("login");
+    const token = localStorage.getItem("token");
     document.title = "Hisoc Admin | Vendor Detail";
     document.querySelector(".loaderBox").classList.remove("d-none");
     // fetch(`${apiUrl}/api/admin/member/${id}`, {
@@ -44,7 +44,7 @@ export const VendorDetail = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${LogoutData}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {

@@ -6,6 +6,8 @@ import { AuthLayout } from "../../Components/Layout/AuthLayout";
 import CustomButton from "../../Components/CustomButton";
 import CustomInput from "../../Components/CustomInput";
 import toast from "react-hot-toast";
+import { useDispatch } from "../../store";
+import { setLogin } from "../../store/slices/user";
 
 const AdminLogin = () => {
   const apiUrl = `${process.env.REACT_APP_BASE_URL}/login`;
@@ -13,13 +15,14 @@ const AdminLogin = () => {
 
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  console.log(formData.password);
+
 
   useEffect(() => {
     document.title = "Wedding Concierge | Login";
@@ -45,13 +48,19 @@ const AdminLogin = () => {
       
       
       const responseData = await response.json();
-      console.log('respose' , responseData);
       if (responseData.success) {
-        localStorage.setItem("login", responseData.token);
-        console.log("Login Response:", responseData);
+
+        dispatch(setLogin({ token: responseData.token, user: responseData?.data }));
         document.querySelector(".loaderBox").classList.add("d-none");
-        navigate("/dashboard");
-        toast.success('Admin Logged in Successfully1')
+        if(responseData?.data?.role == 0 ){
+
+          navigate("/dashboard");
+        }
+        else{
+          navigate("/profile");
+
+        }
+        toast.success(responseData?.message || 'Logged in Successfully1')
       } else {
         document.querySelector(".loaderBox").classList.add("d-none");
         toast.error("Invalid Credentials")
@@ -80,7 +89,6 @@ const AdminLogin = () => {
             inputClass="mainInput"
             onChange={(event) => {
               setFormData({ ...formData, email: event.target.value });
-              console.log(event.target.value);
             }}
           />
           <CustomInput
@@ -93,7 +101,6 @@ const AdminLogin = () => {
             inputClass="mainInput"
             onChange={(event) => {
               setFormData({ ...formData, password: event.target.value });
-              console.log(event.target.value);
             }}
           />
           {/* <div className="d-flex align-items-baseline justify-content-between mt-1">

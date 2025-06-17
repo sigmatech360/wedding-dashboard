@@ -30,7 +30,7 @@ export const UserDetail = () => {
   };
 
   useEffect(() => {
-    const LogoutData = localStorage.getItem("login");
+    const token = localStorage.getItem("token");
     document.title = "Hisoc Admin | User Management Detail";
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${apiUrl}/user/${id}/edit`, {
@@ -38,7 +38,7 @@ export const UserDetail = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${LogoutData}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {

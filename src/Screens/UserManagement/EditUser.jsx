@@ -20,7 +20,7 @@ export const EditUser = () => {
     });
 
     const getUserData = () => {
-        const LogoutData = localStorage.getItem('login');
+        const token = localStorage.getItem("token");
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-user/${id}`,
             {
@@ -28,7 +28,7 @@ export const EditUser = () => {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${LogoutData}`
+                    'Authorization': `Bearer ${token}`
                 },
             }
         )
@@ -48,7 +48,7 @@ export const EditUser = () => {
     }
 
     const fectchBrandData = () => {
-        const LogoutData = localStorage.getItem('login');
+        const token = localStorage.getItem("token");
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/role-listing',
             {
@@ -56,7 +56,7 @@ export const EditUser = () => {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${LogoutData}`
+                    'Authorization': `Bearer ${token}`
                 },
             }
         )
@@ -77,7 +77,7 @@ export const EditUser = () => {
 
 
     const fetchUnitData = () => {
-        const LogoutData = localStorage.getItem('login');
+        const token = localStorage.getItem("token");
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
             {
@@ -85,7 +85,7 @@ export const EditUser = () => {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${LogoutData}`
+                    'Authorization': `Bearer ${token}`
                 },
             }
         )
@@ -106,7 +106,7 @@ export const EditUser = () => {
 
 
 
-    const LogoutData = localStorage.getItem('login');
+    const token = localStorage.getItem("token");
 
 
     const handleSubmit = (event) => {
@@ -125,7 +125,7 @@ export const EditUser = () => {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${LogoutData}`
+                'Authorization': `Bearer ${token}`
             },
             body: formDataMethod // Use the FormData object as the request body
         })

@@ -12,7 +12,7 @@ export const useApi = (endpoint) => {
 
 
   useEffect(() => {
-    const LogoutData = localStorage.getItem('login');
+    const token = localStorage.getItem("token");
     // const base_url = 'https://custom.mystagingserver.site/mtrecords/public/api/'
     async function fetchData() {
       document.querySelector('.loaderBox').classList.remove("d-none");
@@ -22,7 +22,7 @@ export const useApi = (endpoint) => {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${LogoutData}` // Include the token in the headers
+            'Authorization': `Bearer ${token}` // Include the token in the headers
           }
         });
 
@@ -61,7 +61,7 @@ export const usePost = (endpoint) => {
   };
 
   useEffect(() => {
-    const LogoutData = localStorage.getItem('login');
+    const token = localStorage.getItem("token");
     const base_url = 'https://custom.mystagingserver.site/mtrecords/public/api/'
     document.querySelector('.loaderBox').classList.remove("d-none");
     async function fetchData() {
@@ -73,7 +73,7 @@ export const usePost = (endpoint) => {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${LogoutData}` // Include the token in the headers
+            'Authorization': `Bearer ${token}` // Include the token in the headers
           },
           body: JSON.stringify(dataForm)
         });
@@ -121,7 +121,7 @@ export const useEditpost = (endpoint) => {
         setEditData(editValue)
   }
   useEffect(() => {
-    const LogoutData = localStorage.getItem('login');
+    const token = localStorage.getItem("token");
     const base_url = 'https://custom.mystagingserver.site/mtrecords/public/api/'
     document.querySelector('.loaderBox').classList.remove("d-none");
     async function fetchData() {
@@ -133,7 +133,7 @@ export const useEditpost = (endpoint) => {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${LogoutData}` // Include the token in the headers
+            'Authorization': `Bearer ${token}` // Include the token in the headers
           },
         });
 
@@ -185,7 +185,7 @@ export const usePostUpdate = (endpoint) => {
   };
 
   useEffect(() => {
-    const LogoutData = localStorage.getItem('login');
+    const token = localStorage.getItem("token");
     const base_url = 'https://custom.mystagingserver.site/mtrecords/public/api/'
     document.querySelector('.loaderBox').classList.remove("d-none");
     async function fetchData() {
@@ -197,7 +197,7 @@ export const usePostUpdate = (endpoint) => {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${LogoutData}` // Include the token in the headers
+            'Authorization': `Bearer ${token}` // Include the token in the headers
           },
           body: JSON.stringify(dataForm)
         });

@@ -57,14 +57,14 @@ export const EditVendor = () => {
   );
 
   const GenreData = () => {
-    const LogoutData = localStorage.getItem("login");
+    const token = localStorage.getItem("token");
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${apiUrl}/vendor/${id}/edit`, {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${LogoutData}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
@@ -131,7 +131,7 @@ export const EditVendor = () => {
     return `${year}-${month}-${day}`;
   };
 
-  const LogoutData = localStorage.getItem("login");
+  const token = localStorage.getItem("token");
   const [message, setMessage] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -162,7 +162,7 @@ export const EditVendor = () => {
       method: "POST",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${LogoutData}`,
+        Authorization: `Bearer ${token}`,
       },
       body: formDataMethod, // Use the raw data as the request body
     })

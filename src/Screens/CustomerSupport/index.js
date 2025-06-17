@@ -61,7 +61,7 @@ export const CustomerSupport = () => {
 
 
   const AdsListing = () => {
-    const LogoutData = localStorage.getItem('login');
+    const token = localStorage.getItem("token");
     document.querySelector('.loaderBox').classList.remove("d-none");
     fetch('https://custom.mystagingserver.site/Tim-WDLLC/public/api/admin/ads_listing',
       {
@@ -69,7 +69,7 @@ export const CustomerSupport = () => {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
+          'Authorization': `Bearer ${token}`
         },
       }
     )

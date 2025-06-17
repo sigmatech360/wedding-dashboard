@@ -47,7 +47,7 @@ export const VendorManagement = () => {
   }
   
   const ApproveVendor = () => {
-    const LogoutData = localStorage.getItem("login");
+    const token = localStorage.getItem("token");
     document.querySelector(".loaderBox").classList.remove("d-none");
     
     
@@ -57,7 +57,7 @@ export const VendorManagement = () => {
       headers: {
           'Accept': 'application/json',
           "Content-Type": "application/json",
-          'Authorization': `Bearer ${LogoutData}`
+          'Authorization': `Bearer ${token}`
         },
     })
       .then((response) => response.json())
@@ -81,7 +81,7 @@ export const VendorManagement = () => {
   }
 
   const RejectVendor = () => {
-    const LogoutData = localStorage.getItem("login");
+    const token = localStorage.getItem("token");
     document.querySelector(".loaderBox").classList.remove("d-none");
     
     
@@ -91,7 +91,7 @@ export const VendorManagement = () => {
       headers: {
           'Accept': 'application/json',
           "Content-Type": "application/json",
-          'Authorization': `Bearer ${LogoutData}`
+          'Authorization': `Bearer ${token}`
         },
     })
       .then((response) => response.json())
@@ -145,14 +145,14 @@ export const VendorManagement = () => {
   const imageUrl = process.env.REACT_APP_BASE_IMAGE_URL;
 
   const Vendorlist = () => {
-    const LogoutData = localStorage.getItem("login");
+    const token = localStorage.getItem("token");
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${apiUrl}/all-vendor`, {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${LogoutData}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
@@ -206,14 +206,14 @@ export const VendorManagement = () => {
   ];
 
   // const DeleteMember = ( ) => {
-  //   const LogoutData = localStorage.getItem("login");
+  //   const token = localStorage.getItem("token");
   //   document.querySelector(".loaderBox").classList.remove("d-none");
   //   fetch(`${apiUrl}/api/admin/member/${handledeleteid}`, {
   //     method: "DELETE",
   //     headers: {
   //       Accept: "application/json",
   //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${LogoutData}`,
+  //       Authorization: `Bearer ${token}`,
   //     },
   //   })
   //     .then((response) => response.json())

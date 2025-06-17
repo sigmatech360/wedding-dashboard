@@ -63,7 +63,7 @@ export const UserManagement = () => {
 
   useEffect(() => {
     document.title = 'Wedding Concierge | User Management';
-    const LogoutData = localStorage.getItem('login');
+    const token = localStorage.getItem("token");
     document.querySelector('.loaderBox').classList.remove("d-none");
     fetch(`${process.env.REACT_APP_BASE_URL}/all-users`,
       {
@@ -71,7 +71,7 @@ export const UserManagement = () => {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
+          'Authorization': `Bearer ${token}`
         },
       }
     )
