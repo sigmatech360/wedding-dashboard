@@ -21,6 +21,7 @@ import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
 
 import "./style.css";
+import toast from "react-hot-toast";
 
 export const VendorManagement = () => {
 
@@ -64,6 +65,7 @@ export const VendorManagement = () => {
       .then((data) => {
         console.log('aPPROVED ',data?.data);
         document.querySelector(".loaderBox").classList.add("d-none");
+        toast.success("Vendor Approved Successfully");
         // setData(data?.data);
         Vendorlist();
       })
@@ -96,10 +98,11 @@ export const VendorManagement = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('aPPROVED ',data?.data);
+        console.log('rejected ',data?.data);
         document.querySelector(".loaderBox").classList.add("d-none");
         // setData(data?.data);
         Vendorlist();
+        toast.success("Vendor Rejected Successfully");
       })
       .catch((error) => {
         document.querySelector(".loaderBox").classList.add("d-none");
