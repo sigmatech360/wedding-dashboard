@@ -38,6 +38,7 @@ export const VendorManagement = () => {
 
   const [showModal5, setShowModal5] = useState(false);
   const [showModal6, setShowModal6] = useState(false);
+  const [showModal7, setShowModal7] = useState(false);
 
   const [handledeleteid, setHandledeleteid] = useState()
   const [handleApproveid, setHandApproveid] = useState()
@@ -66,6 +67,38 @@ export const VendorManagement = () => {
         console.log('aPPROVED ',data?.data);
         document.querySelector(".loaderBox").classList.add("d-none");
         toast.success("Vendor Approved Successfully");
+        // setData(data?.data);
+        Vendorlist();
+      })
+      .catch((error) => {
+        document.querySelector(".loaderBox").classList.add("d-none");
+        console.log(error);
+      });
+  }
+  const handleDelete = (id) => {
+    setShowModal7(true)
+    setHandledeleteid(id) 
+  }
+  
+  const deleteVendor = () => {
+    const token = localStorage.getItem("token");
+    document.querySelector(".loaderBox").classList.remove("d-none");
+    
+    
+    fetch(`${apiUrl}/vendor/${handledeleteid}/delete`, {
+      method: "POST",
+      // body: JSON.stringify({status:'approved'}),
+      headers: {
+          'Accept': 'application/json',
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+        },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Vendor Deleted ',data?.data);
+        document.querySelector(".loaderBox").classList.add("d-none");
+        toast.success("Vendor Deleted Successfully");
         // setData(data?.data);
         Vendorlist();
       })
@@ -344,6 +377,16 @@ export const VendorManagement = () => {
                                     Reject
                                   </button>
                                 )}
+                                <button
+                                    type="button"
+                                    className="tableAction border-0 ps-lg-3 pt-1"
+                                    onClick={() => handleDelete(item?.id)}
+                                  >
+                                     <FontAwesomeIcon
+                                      icon={faTrash}
+                                    ></FontAwesomeIcon>{" "} 
+                                    Delete
+                                  </button>
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
@@ -401,6 +444,7 @@ export const VendorManagement = () => {
 
           <CustomModal show={showModal5} close={() => { setShowModal5(false) }} action={() => { setShowModal5(false); ApproveVendor() }} heading={" Do you want to Approve this Vendor ?"} />
           <CustomModal show={showModal6} close={() => { setShowModal6(false) }} action={() => { setShowModal6(false); RejectVendor() }} heading={" Do you want to Reject this Vendor ?"} />
+          <CustomModal show={showModal7} close={() => { setShowModal7(false) }} action={() => { setShowModal7(false); deleteVendor() }} heading={" Do you want to Delete this Vendor ?"} />
         </div>
       </DashboardLayout>
     </>
