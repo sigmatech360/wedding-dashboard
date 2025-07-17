@@ -32,7 +32,7 @@ export const AddVendor = () => {
 
   const [message, setMessage] = useState("")
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("admintoken");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -46,7 +46,7 @@ export const AddVendor = () => {
 
     document.querySelector(".loaderBox").classList.remove("d-none");
     // Make the fetch request
-    fetch(`${apiUrl}/api/admin/member`, {
+    fetch(`${apiUrl}/admin/member`, {
       method: "POST",
       headers: {
         Accept: "application/json",

@@ -41,7 +41,7 @@ export const Header = (props) => {
   }
 
   const handleRedirect = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     fetch(`${process.env.REACT_APP_BASE_URL}/logout`,
       {
         method: 'POST',
@@ -57,7 +57,7 @@ export const Header = (props) => {
       })
       .then((data) => {
         console.log(data)
-        dispatch(setLogout)
+        dispatch(setLogout())
         navigate('/');
       })
       .catch((error) => {
@@ -72,7 +72,6 @@ export const Header = (props) => {
 
   useEffect(() => {
     setNotificationState(notifications)
-    setRole(localStorage.getItem("role"))
   }, [])
 
 
@@ -80,8 +79,8 @@ export const Header = (props) => {
 
 
   const PrfileDetail = () => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role")
+    const token = localStorage.getItem("admintoken");
+    const role = localStorage.getItem("adminrole")
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${apiUrl}/${role == 0 ? 'profile-edit': 'vendor/profile-edit'}`, {
       method: "GET",

@@ -57,7 +57,7 @@ export const EditVendor = () => {
   );
 
   const GenreData = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${apiUrl}/vendor/${id}/edit`, {
       method: "GET",
@@ -131,7 +131,7 @@ export const EditVendor = () => {
     return `${year}-${month}-${day}`;
   };
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("admintoken");
   const [message, setMessage] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();

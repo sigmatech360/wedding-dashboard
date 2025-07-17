@@ -23,7 +23,6 @@ const EditVendorProfile = () => {
     const navigate = useNavigate()
 
     const [userData, setUserData] = useState({});
-    const [role, setRole] = useState();
     const [userNewData, setUserNewData] = useState({})
     const [optionData, setOptionData] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -50,7 +49,8 @@ const EditVendorProfile = () => {
 
 
     const PrfileDetail = () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("admintoken");
+        const role = localStorage.getItem('adminrole');
         document.querySelector(".loaderBox").classList.remove("d-none");
         fetch(`${apiUrl}/${role == 0 ? 'profile-edit': 'vendor/profile-edit'}`, {
             method: "GET",
@@ -65,7 +65,6 @@ const EditVendorProfile = () => {
                 console.log(data?.data);
                 document.querySelector(".loaderBox").classList.add("d-none");
                 setFormData(data?.data);
-                setRole(data?.data?.role)
             })
             .catch((error) => {
                 document.querySelector(".loaderBox").classList.add("d-none");
@@ -81,7 +80,6 @@ const EditVendorProfile = () => {
 
     useEffect(() => {
         PrfileDetail();
-        setRole(localStorage.getItem('role'))
         
         
     }, [])
@@ -113,7 +111,7 @@ const EditVendorProfile = () => {
         };
     }, [formData?.imageFile]);
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
 
 
 

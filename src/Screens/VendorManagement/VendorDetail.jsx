@@ -35,7 +35,7 @@ export const VendorDetail = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     document.title = "Hisoc Admin | Vendor Detail";
     document.querySelector(".loaderBox").classList.remove("d-none");
     // fetch(`${apiUrl}/api/admin/member/${id}`, {

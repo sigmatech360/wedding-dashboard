@@ -61,7 +61,7 @@ export const CustomerSupport = () => {
 
 
   const AdsListing = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     document.querySelector('.loaderBox').classList.remove("d-none");
     fetch('https://custom.mystagingserver.site/Tim-WDLLC/public/api/admin/ads_listing',
       {

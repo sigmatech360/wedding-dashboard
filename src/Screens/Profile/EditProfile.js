@@ -23,7 +23,6 @@ const EditProfile = () => {
     const navigate = useNavigate()
 
     const [userData, setUserData] = useState({});
-    const [role, setRole] = useState();
     const [userNewData, setUserNewData] = useState({})
     const [optionData, setOptionData] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -50,7 +49,7 @@ const EditProfile = () => {
 
 
     const PrfileDetail = () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("admintoken");
         document.querySelector(".loaderBox").classList.remove("d-none");
         fetch(`${apiUrl}/profile-edit`, {
             method: "GET",
@@ -65,7 +64,6 @@ const EditProfile = () => {
                 console.log(data?.data);
                 document.querySelector(".loaderBox").classList.add("d-none");
                 setFormData(data?.data);
-                setRole(data?.data?.role)
             })
             .catch((error) => {
                 document.querySelector(".loaderBox").classList.add("d-none");
@@ -81,7 +79,6 @@ const EditProfile = () => {
 
     useEffect(() => {
         PrfileDetail();
-        setRole(localStorage.getItem('role'))
         
         
     }, [])
@@ -113,7 +110,7 @@ const EditProfile = () => {
         };
     }, [formData?.imageFile]);
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
 
 
 

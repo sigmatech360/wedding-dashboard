@@ -36,7 +36,7 @@ const ChangePassword = () => {
 
     const apiUrl = process.env.REACT_APP_BASE_URL;
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     const [message, setMessage] = useState("")
     const [status, setStatus] = useState("")
     const handleSubmit = (event) => {
@@ -52,7 +52,7 @@ const ChangePassword = () => {
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
 
-        fetch(`${apiUrl}/api/admin/profile/change-password`, {
+        fetch(`${apiUrl}/admin/profile/change-password`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

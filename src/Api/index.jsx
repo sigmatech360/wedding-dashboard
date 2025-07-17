@@ -12,7 +12,7 @@ export const useApi = (endpoint) => {
 
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     // const base_url = 'https://custom.mystagingserver.site/mtrecords/public/api/'
     async function fetchData() {
       document.querySelector('.loaderBox').classList.remove("d-none");
@@ -61,7 +61,7 @@ export const usePost = (endpoint) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     const base_url = 'https://custom.mystagingserver.site/mtrecords/public/api/'
     document.querySelector('.loaderBox').classList.remove("d-none");
     async function fetchData() {
@@ -121,7 +121,7 @@ export const useEditpost = (endpoint) => {
         setEditData(editValue)
   }
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     const base_url = 'https://custom.mystagingserver.site/mtrecords/public/api/'
     document.querySelector('.loaderBox').classList.remove("d-none");
     async function fetchData() {
@@ -185,7 +185,7 @@ export const usePostUpdate = (endpoint) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     const base_url = 'https://custom.mystagingserver.site/mtrecords/public/api/'
     document.querySelector('.loaderBox').classList.remove("d-none");
     async function fetchData() {

@@ -19,22 +19,16 @@ const VendorProfile = () => {
     const navigate = useNavigate()
 
     const [userData, setUserData] = useState({});
-    const [role, setRole] = useState();
 
     useEffect(() => {
         document.title = 'Wedding Concierge | My Profile';
-        setRole(localStorage.getItem('role'))
 
         // setUserData(currentUser);
     }, []);
-    useEffect(()=>{
-        console.log('role',role);
-        
-    },[role])
-
 
     const PrfileDetail = () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("admintoken");
+        const role = localStorage.getItem('adminrole')
         document.querySelector(".loaderBox").classList.remove("d-none");
         fetch(`${apiUrl}/${role == 0 ? 'profile-edit': 'vendor/profile-edit'}`, {
             method: "GET",

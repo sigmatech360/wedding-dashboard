@@ -58,7 +58,7 @@ export const Dashboard = () => {
   
   useEffect(()=>{
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("admintoken");
       fetchVendor(token);
       fetchUser(token);
     } catch (error) {

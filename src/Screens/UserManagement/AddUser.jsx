@@ -19,7 +19,7 @@ export const AddUser = () => {
 
 
     const fectchBrandData = () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("admintoken");
         document.querySelector('.loaderBox').classList.remove("d-none");
 
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/role-listing',
@@ -49,7 +49,7 @@ export const AddUser = () => {
 
 
     const fetchUnitData = () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("admintoken");
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
             {
@@ -78,7 +78,7 @@ export const AddUser = () => {
 
 
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
 
 
     const handleSubmit = (event) => {

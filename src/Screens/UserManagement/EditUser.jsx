@@ -20,7 +20,7 @@ export const EditUser = () => {
     });
 
     const getUserData = () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("admintoken");
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-user/${id}`,
             {
@@ -48,7 +48,7 @@ export const EditUser = () => {
     }
 
     const fectchBrandData = () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("admintoken");
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/role-listing',
             {
@@ -77,7 +77,7 @@ export const EditUser = () => {
 
 
     const fetchUnitData = () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("admintoken");
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
             {
@@ -106,7 +106,7 @@ export const EditUser = () => {
 
 
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
 
 
     const handleSubmit = (event) => {

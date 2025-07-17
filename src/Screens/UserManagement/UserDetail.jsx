@@ -30,7 +30,7 @@ export const UserDetail = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     document.title = "Hisoc Admin | User Management Detail";
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${apiUrl}/user/${id}/edit`, {

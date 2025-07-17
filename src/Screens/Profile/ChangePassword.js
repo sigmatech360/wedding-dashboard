@@ -36,7 +36,7 @@ const ChangePassword = () => {
 
     const apiUrl = process.env.REACT_APP_BASE_URL;
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     const [message, setMessage] = useState("")
     const [status, setStatus] = useState("")
     const handleSubmit = (event) => {
@@ -52,7 +52,7 @@ const ChangePassword = () => {
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
 
-        fetch(`${apiUrl}/api/admin/profile/change-password`, {
+        fetch(`${apiUrl}/change-password`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -66,10 +66,10 @@ const ChangePassword = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(data);
-                if (data?.status == true) {
+                if (data?.success == true) {
                     setShowModal(true)
                     setMessage(data?.message)
-                    setStatus(data?.status)
+                    setStatus(data?.success)
                 } else {
                     setShowModal(true)
                     setMessage(data?.message)
@@ -108,7 +108,7 @@ const ChangePassword = () => {
                             <form onSubmit={handleSubmit}>
                                 <div className="row mb-3">
                                     <div className="col-12">
-                                        <CustomInput label="Current Password" labelClass="mainLabel" required type="password" placeholder="Enter Current Password" name="current_password" inputClass="mainInput" onChange={handleChanges}
+                                        <CustomInput label="Current Password" labelClass="mainLabel" required type="password" placeholder="Enter Current Password" name="old_password" inputClass="mainInput" onChange={handleChanges}
                                         />
                                     </div>
                                 </div>

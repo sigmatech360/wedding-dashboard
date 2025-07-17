@@ -15,7 +15,7 @@ import { FaCamera } from "react-icons/fa";
 import { MdDone } from "react-icons/md";
 import { FaPencil } from "react-icons/fa6";
 import toast from "react-hot-toast";
-import { setLogin } from "../../store/slices/user";
+import { setLogin, updateUser } from "../../store/slices/user";
 import axios from "axios";
 
 const Profile = () => {
@@ -69,18 +69,14 @@ const Profile = () => {
 
   useEffect(() => {
     document.title = "Wedding Concierge | My Profile";
-    setRole(localStorage.getItem("role"));
+    setRole(localStorage.getItem("adminrole"))
 
     // setUserData(currentUser);
   }, []);
-  useEffect(() => {
-    console.log("role", role);
-  }, [role]);
 
   const PrfileDetail = () => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-    console.log('role is', role);
+    const token = localStorage.getItem("admintoken");
+    const role = localStorage.getItem("adminrole");
     
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${apiUrl}/${role == 0 ? "profile-edit" : "vendor/profile-edit"}`, {
@@ -154,7 +150,7 @@ const Profile = () => {
   const updateProfile = async () => {
     document.querySelector(".loaderBox").classList.remove("d-none");
     const baseUrl = `${process.env.REACT_APP_BASE_URL}`;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     const formDataMethod = new FormData();
     for (const key in formData) {
       if (key === "portfolio_images") {
@@ -184,7 +180,7 @@ const Profile = () => {
         document.querySelector(".loaderBox").classList.add("d-none");
         toast.success("Vendor Updated Successfully");
         const user = responseData.data;
-        dispatch(setLogin({ token: token, user: user }));
+        dispatch(updateUser(user));
         // navigate('/login');
       }
     } catch (error) {

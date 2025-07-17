@@ -48,7 +48,7 @@ export const Sidebar = (props) => {
   const location = useLocation()
   const [sideBarNavlinks, setSideBarNavlinks]=useState([]);
 useEffect(()=>{
-  if(localStorage.getItem('role') == 0){
+  if(localStorage.getItem('adminrole') == 0){
     setSideBarNavlinks(adminSideBarNavlinks)
   }
   else{

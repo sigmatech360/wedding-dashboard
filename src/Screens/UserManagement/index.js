@@ -76,7 +76,7 @@ export const UserManagement = () => {
   }, []);
 
   const Userlist = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${process.env.REACT_APP_BASE_URL}/all-users`, {
       method: "GET",
@@ -104,7 +104,7 @@ export const UserManagement = () => {
   }
   
   const deleteVendor = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     document.querySelector(".loaderBox").classList.remove("d-none");
     
     

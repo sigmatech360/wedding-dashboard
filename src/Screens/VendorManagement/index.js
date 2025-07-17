@@ -10,6 +10,8 @@ import {
 
   faEdit,
   faTrash,
+  faCheck,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
@@ -49,7 +51,7 @@ export const VendorManagement = () => {
   }
   
   const ApproveVendor = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     document.querySelector(".loaderBox").classList.remove("d-none");
     
     
@@ -81,7 +83,7 @@ export const VendorManagement = () => {
   }
   
   const deleteVendor = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     document.querySelector(".loaderBox").classList.remove("d-none");
     
     
@@ -116,7 +118,7 @@ export const VendorManagement = () => {
   }
 
   const RejectVendor = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     document.querySelector(".loaderBox").classList.remove("d-none");
     
     
@@ -181,7 +183,7 @@ export const VendorManagement = () => {
   const imageUrl = process.env.REACT_APP_BASE_IMAGE_URL;
 
   const Vendorlist = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("admintoken");
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${apiUrl}/all-vendor`, {
       method: "GET",
@@ -242,7 +244,7 @@ export const VendorManagement = () => {
   ];
 
   // const DeleteMember = ( ) => {
-  //   const token = localStorage.getItem("token");
+  //   const token = localStorage.getItem("admintoken");
   //   document.querySelector(".loaderBox").classList.remove("d-none");
   //   fetch(`${apiUrl}/api/admin/member/${handledeleteid}`, {
   //     method: "DELETE",
@@ -359,10 +361,10 @@ export const VendorManagement = () => {
                                     className="tableAction border-0 ps-lg-3 pt-1"
                                     onClick={() => handleApprove(item?.id)}
                                   >
-                                    {/* <FontAwesomeIcon
-                                      icon={faTrash}
-                                    ></FontAwesomeIcon>{" "} */}
-                                    Approve
+                                    <FontAwesomeIcon
+                                      icon={faCheck} className="text-success"
+                                    ></FontAwesomeIcon>{" "}
+                                     Approve
                                   </button>
                                 ):(
 
@@ -374,6 +376,7 @@ export const VendorManagement = () => {
                                     {/* <FontAwesomeIcon
                                       icon={faTrash}
                                     ></FontAwesomeIcon>{" "} */}
+                                    <FontAwesomeIcon icon={faXmark} className="text-danger" />{" "}
                                     Reject
                                   </button>
                                 )}

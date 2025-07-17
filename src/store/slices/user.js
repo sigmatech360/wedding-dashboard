@@ -11,8 +11,8 @@ const initialState = {
   export const initializeUser = createAsyncThunk(
     'user/initialize',
     async (_, { dispatch }) => {
-      const token = localStorage.getItem('token');
-      const user = localStorage.getItem('user');
+      const token = localStorage.getItem('admintoken');
+      const user = localStorage.getItem("adminuser");
       
       // const userResponse = await axios.get(`${import.meta.env.VITE_BASE_URL}/edit-profile`, {
       //   headers: {
@@ -45,17 +45,17 @@ const initialState = {
         state.user = user;
         state.isAuthenticated = true;
         console.log('user', user);
-        localStorage.setItem('token', token)
-        localStorage.setItem('role', user.role)
-        localStorage.setItem('user', JSON.stringify(user))
+        localStorage.setItem('admintoken', token)
+        localStorage.setItem('adminrole', user.role)
+        localStorage.setItem('adminuser', JSON.stringify(user))
         
       },
       setLogout(state) {
         state.user = null;
         state.isAuthenticated = false;
-        localStorage.removeItem('token')
-        localStorage.setItem('role')
-        localStorage.removeItem('user')
+        localStorage.removeItem('admintoken')
+        localStorage.removeItem('adminrole')
+        localStorage.removeItem('adminuser')
       },
       updateUser(state, action) {
         state.user = action.payload;
