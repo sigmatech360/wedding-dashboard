@@ -4,7 +4,9 @@ import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomButton from "../../Components/CustomButton";
-import Lightbox from "react-image-lightbox";
+import Lightbox from "yet-another-react-lightbox";
+import Video from "yet-another-react-lightbox/plugins/video";
+import "yet-another-react-lightbox/styles.css";
 
 import placeholderimage from "../../Assets/images/placeholderimage.png";
 export const VendorDetail = () => {
@@ -16,6 +18,7 @@ export const VendorDetail = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [images, setImages] = useState([]);
 
   const [data, setData] = useState({});
 
@@ -60,7 +63,34 @@ export const VendorDetail = () => {
         document.querySelector(".loaderBox").classList.add("d-none");
         console.log(error);
       });
-  }, [id]); 
+  }, [id]);
+
+  const handleImageClick = (index, imageArray) => {
+    const imageList = imageArray.map((item) => `${imageUrl}/${item}`);
+    let typeImages = imageList.map((media, _index) => {
+      const isFile = media instanceof File;
+      const fileType = isFile
+        ? media.type
+        : media?.includes(".mp4") ||
+          media?.includes(".webm") ||
+          media?.includes(".mov")
+        ? "video"
+        : "image";
+      const src = isFile ? URL.createObjectURL(media) : `${media}`;
+      if (fileType == "image") {
+        return { src };
+      }
+      return {
+        type: fileType,
+        width: 1280,
+        height: 720,
+        sources: [{ type: "video/mp4", src }],
+      };
+    });
+
+    setImages(typeImages);
+    setPhotoIndex(index);
+  };
 
   return (
     <>
@@ -148,35 +178,89 @@ export const VendorDetail = () => {
                     </p>
                     {data?.portfolio_images &&
                       data?.portfolio_images.length > 0 &&
-                      data?.portfolio_images.map((image, index) => (
-                        <div className="col-md-6 mt-3">
-                          <img
-                            src={`${imageUrl}/${image}`}
-                            className="w-100 c-pointer gallery-image"
-                            alt=""
-                            onClick={() => { setIsOpen(true); setPhotoIndex(index); }}
-                          />
-                        </div>
-                      ))}
+                      data?.portfolio_images.map((media, _index) => {
+                        const isFile = media instanceof File;
+                        const fileType = isFile
+                          ? media.type
+                          : media?.includes(".mp4") ||
+                            media?.includes(".webm") ||
+                            media?.includes(".mov")
+                          ? "video"
+                          : "image";
+                        const src = isFile
+                          ? URL.createObjectURL(media)
+                          : `${imageUrl}/${media}`;
+                        return (
+                          <div className="col-md-6 mt-3">
+                            {fileType === "video/mp4" ||
+                            fileType === "video" ? (
+                              <video
+                                className="w-100 c-pointer gallery-image"
+                                src={src}
+                                muted
+                                autoPlay="true"
+                                loop
+                                width="100%"
+                              />
+                            ) : (
+                              <img
+                                src={src}
+                                className="w-100 c-pointer gallery-image"
+                                alt={`Portfolio ${_index}`}
+                                // onClick={() => { setIsOpen(true); setPhotoIndex(_index); }}
+                                onClick={() =>
+                                  handleImageClick(
+                                    _index,
+                                    data?.portfolio_images
+                                  )
+                                }
+                              />
+                            )}
+                          </div>
+                        );
+                      })}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {isOpen && (
-          
+        {/* {isOpen && (
           <Lightbox
             mainSrc={`${imageUrl}/${data?.portfolio_images[photoIndex]}`}
-            nextSrc={`${imageUrl}/${data?.portfolio_images[(photoIndex + 1) % data?.portfolio_images.length]}`}
-            prevSrc={`${imageUrl}/${data?.portfolio_images[(photoIndex + data?.portfolio_images.length - 1) % data?.portfolio_images.length]}`}
+            nextSrc={`${imageUrl}/${
+              data?.portfolio_images[
+                (photoIndex + 1) % data?.portfolio_images.length
+              ]
+            }`}
+            prevSrc={`${imageUrl}/${
+              data?.portfolio_images[
+                (photoIndex + data?.portfolio_images.length - 1) %
+                  data?.portfolio_images.length
+              ]
+            }`}
             onCloseRequest={() => setIsOpen(false)}
             onMovePrevRequest={() =>
-              setPhotoIndex((photoIndex + data?.portfolio_images.length - 1) % data?.portfolio_images.length)
+              setPhotoIndex(
+                (photoIndex + data?.portfolio_images.length - 1) %
+                  data?.portfolio_images.length
+              )
             }
             onMoveNextRequest={() =>
               setPhotoIndex((photoIndex + 1) % data?.portfolio_images.length)
             }
+          />
+        )} */}
+        {isOpen && (
+          <Lightbox
+            open={isOpen}
+            close={() => setIsOpen(false)}
+            slides={images}
+            index={photoIndex}
+            on={{
+              view: ({ index }) => setPhotoIndex(index),
+            }}
+            plugins={[Video]}
           />
         )}
 
