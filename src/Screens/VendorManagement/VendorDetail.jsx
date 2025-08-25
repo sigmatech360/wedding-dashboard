@@ -7,6 +7,19 @@ import CustomButton from "../../Components/CustomButton";
 import Lightbox from "yet-another-react-lightbox";
 import Video from "yet-another-react-lightbox/plugins/video";
 import "yet-another-react-lightbox/styles.css";
+import Venue from "../../Components/ServiceQuestions/Venue";
+import Photographers from "../../Components/ServiceQuestions/Photographers";
+import Videographer from "../../Components/ServiceQuestions/Videographer";
+import DJ from "../../Components/ServiceQuestions/DJ";
+import Florist from "../../Components/ServiceQuestions/Florist";
+import Planner from "../../Components/ServiceQuestions/Planner";
+import Catering from "../../Components/ServiceQuestions/Catering";
+import MakeupArtist from "../../Components/ServiceQuestions/MakeupArtist";
+import HairStylist from "../../Components/ServiceQuestions/HairStylist";
+import Stationary from "../../Components/ServiceQuestions/Stationary";
+import Rentals from "../../Components/ServiceQuestions/Rentals";
+import Booth from "../../Components/ServiceQuestions/Booth";
+import Bakery from "../../Components/ServiceQuestions/Bakery";
 
 import placeholderimage from "../../Assets/images/placeholderimage.png";
 import { FiUser } from "react-icons/fi";
@@ -323,8 +336,7 @@ export const VendorDetail = () => {
                 <div className="col-md-6 mb-4">
                   <label className="mainLabel">Website</label>
                   <p>
-                  <Link to={data?.add_website}>{data?.add_website}</Link>
-
+                    <Link to={data?.add_website}>{data?.add_website}</Link>
                   </p>
                 </div>
 
@@ -391,11 +403,10 @@ export const VendorDetail = () => {
                     <strong>Business Type</strong>
                     <div className="mt-3">
                       {(data?.vendor_type || []).map((type, index) => (
-                        <h5  key={index}>
-
-                        <span  className="badge bg-dark me-2">
-                          {type.label || type}
-                        </span>
+                        <h5 key={index}>
+                          <span className="badge bg-dark me-2">
+                            {type.label || type}
+                          </span>
                         </h5>
                       ))}
                     </div>
@@ -405,39 +416,44 @@ export const VendorDetail = () => {
                 {/* Services Sections */}
                 {/* <div className="col-12">
                   <div className="row">
-                    {data?.selectedServices?.includes(
+                    {data?.vendor_type?.includes(
                       "Venue (Ceremony & Reception)"
                     ) && (
                       <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Venue:</h4>
-                        <Venue formData={data} />
+                        <h4 className="fw-bold">Venues:</h4>
+                        <ul>
+                        {data?.venue_type?.map((venue, index) => (
+                          <li key={index}>{venue}</li>
+                        ))}
+                        </ul>
+                        <label className="mainLabel">Budget</label>
+                        {data?.venue_budget && <p> Under {data?.venue_budget}k</p>}
                       </div>
                     )}
-                    {data?.selectedServices?.includes("Photographer") && (
+                    {data?.vendor_type?.includes("Photographer") && (
                       <div className="mb-3 col-lg-8 mt-3">
                         <h4 className="fw-bold">Photographer:</h4>
-                        <Photographers formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes("Videographer") && (
+                    {data?.vendor_type?.includes("Videographer") && (
                       <div className="mb-3 col-lg-8 mt-3">
                         <h4 className="fw-bold">Videographer:</h4>
                         <Videographer formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes("DJ") && (
+                    {data?.vendor_type?.includes("DJ") && (
                       <div className="mb-3 col-lg-8 mt-3">
                         <h4 className="fw-bold">DJ:</h4>
                         <DJ formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes("Florist") && (
+                    {data?.vendor_type?.includes("Florist") && (
                       <div className="mb-3 col-lg-8 mt-3">
                         <h4 className="fw-bold">Florist:</h4>
                         <Florist formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes(
+                    {data?.vendor_type?.includes(
                       "Wedding Planner / Coordinator"
                     ) && (
                       <div className="mb-3 col-lg-8 mt-3">
@@ -445,25 +461,25 @@ export const VendorDetail = () => {
                         <Planner formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes("Caterer") && (
+                    {data?.vendor_type?.includes("Caterer") && (
                       <div className="mb-3 col-lg-8 mt-3">
                         <h4 className="fw-bold">Catering:</h4>
                         <Catering formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes("Makeup Artist") && (
+                    {data?.vendor_type?.includes("Makeup Artist") && (
                       <div className="mb-3 col-lg-8 mt-3">
                         <h4 className="fw-bold">Makeup Artist:</h4>
                         <MakeupArtist formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes("Hair Stylist") && (
+                    {data?.vendor_type?.includes("Hair Stylist") && (
                       <div className="mb-3 col-lg-8 mt-3">
                         <h4 className="fw-bold">Hair Stylist:</h4>
                         <HairStylist formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes(
+                    {data?.vendor_type?.includes(
                       "Stationery Designer (invitations, menus, programs)"
                     ) && (
                       <div className="mb-3 col-lg-8 mt-3">
@@ -471,7 +487,7 @@ export const VendorDetail = () => {
                         <Stationary formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes(
+                    {data?.vendor_type?.includes(
                       "Rental Company (tables, chairs, linens, etc.)"
                     ) && (
                       <div className="mb-3 col-lg-8 mt-3">
@@ -479,7 +495,7 @@ export const VendorDetail = () => {
                         <Rentals formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes(
+                    {data?.vendor_type?.includes(
                       "Photo Booth / 360 Booth"
                     ) && (
                       <div className="mb-3 col-lg-8 mt-3">
@@ -487,7 +503,7 @@ export const VendorDetail = () => {
                         <Booth formData={data} />
                       </div>
                     )}
-                    {data?.selectedServices?.includes(
+                    {data?.vendor_type?.includes(
                       "Bakery (cake, desserts)"
                     ) && (
                       <div className="mb-3 col-lg-8 mt-3">
@@ -497,6 +513,186 @@ export const VendorDetail = () => {
                     )}
                   </div>
                 </div> */}
+                <div className="col-12">
+                  <div className="row">
+                    {data?.vendor_type?.includes(
+                      "Venue (Ceremony & Reception)"
+                    ) && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Venues:</h4>
+                        <ul>
+                          {data?.venue_type?.map((venue, index) => (
+                            <li key={index}>{venue}</li>
+                          ))}
+                        </ul>
+                        <label className="mainLabel">Budget</label>
+                        {data?.venue_budget && (
+                          <p>Under {data?.venue_budget}k</p>
+                        )}
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes("Photographer") && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Photographer:</h4>
+                        <ul>
+                          {data?.photographer_editing_style?.map((style, i) => (
+                            <li key={i}>{style}</li>
+                          ))}
+                          {data?.photographer_shooting_style?.map(
+                            (style, i) => (
+                              <li key={`shoot-${i}`}>{style}</li>
+                            )
+                          )}
+                        </ul>
+                        <label className="mainLabel">Budget</label>
+                        {data?.photographer_budget && (
+                          <p>Under {data?.photographer_budget}k</p>
+                        )}
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes("Videographer") && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Videographer:</h4>
+                        <ul>
+                          {data?.videography_type?.map((type, i) => (
+                            <li key={i}>{type}</li>
+                          ))}
+                          {data?.videography_categories && (
+                            <li>{data?.Videography_categories}</li>
+                          )}
+                        </ul>
+                        <label className="mainLabel">Budget</label>
+                        {data?.videography_budget && (
+                          <p>Under {data?.videography_budget}k</p>
+                        )}
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes("DJ") && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">DJ:</h4>
+                        <ul>
+                          {data?.dj_type?.map((type, i) => (
+                            <li key={i}>{type}</li>
+                          ))}
+                        </ul>
+                        <label className="mainLabel">Budget</label>
+                        {data?.dj_budget && <p>Under {data?.dj_budget}k</p>}
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes("Florist") && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Florist:</h4>
+                        {data?.florist_budget && (
+                          <p>Under {data?.florist_budget}k</p>
+                        )}
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes(
+                      "Wedding Planner / Coordinator"
+                    ) && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Planner:</h4>
+                        <ul>
+                          {data?.planner_type?.map((type, i) => (
+                            <li key={i}>{type}</li>
+                          ))}
+                        </ul>
+                        <label className="mainLabel">Budget</label>
+                        {data?.planner_budget && (
+                          <p>Under {data?.planner_budget}k</p>
+                        )}
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes("Caterer") && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Catering:</h4>
+                        <ul>
+                          {data?.catering_type?.map((type, i) => (
+                            <li key={i}>{type}</li>
+                          ))}
+                          {data?.food_type?.map((food, i) => (
+                            <li key={`food-${i}`}>{food}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes("Makeup Artist") && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Makeup Artist:</h4>
+                        <label className="mainLabel">Budget</label>
+                        {data?.makeupartist_budget && (
+                          <p>Under {data?.makeupartist_budget}k</p>
+                        )}
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes("Hair Stylist") && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Hair Stylist:</h4>
+                        <ul>
+                          {data?.hairstylist_type?.map((type, i) => (
+                            <li key={i}>{type}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes(
+                      "Stationery Designer (invitations, menus, programs)"
+                    ) && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Stationery:</h4>
+                        <ul>
+                          {data?.stationary_type?.map((type, i) => (
+                            <li key={i}>{type}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes(
+                      "Rental Company (tables, chairs, linens, etc.)"
+                    ) && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Rentals:</h4>
+                        <ul>
+                          {data?.rental_type?.map((type, i) => (
+                            <li key={i}>{type}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes("Photo Booth / 360 Booth") && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Photo Booth / 360 Booth:</h4>
+                        <ul>
+                          {data?.photo_booth_type?.map((type, i) => (
+                            <li key={i}>{type}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {data?.vendor_type?.includes("Bakery (cake, desserts)") && (
+                      <div className="mb-3 col-lg-8 mt-3">
+                        <h4 className="fw-bold">Bakery (cake, desserts):</h4>
+                        <ul>
+                          {data?.bakery_type?.map((type, i) => (
+                            <li key={i}>{type}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
 
                 {/* Portfolio Images/Videos */}
                 {/* <div className="mb-4">

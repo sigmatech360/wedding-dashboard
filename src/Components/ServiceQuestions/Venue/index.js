@@ -1,6 +1,6 @@
 import React from "react";
 
-const Venue = ({ setFormData, formData }) => {
+const Venue = ({ setFormData, formData, viewOnly=false }) => {
   const handleVenueChange = (e) => {
     const { checked, id } = e.target;
 
@@ -24,6 +24,21 @@ const Venue = ({ setFormData, formData }) => {
       venue_budget: selectedValue,
     }));
   };
+  if(viewOnly){
+    return(
+      <>
+      
+      <ul className=" mb-0">
+        {formData?.venue_type?.map((venue, index) => (
+          <li key={index}>{venue}</li>
+        ))}
+      </ul>
+      
+        {formData?.venue_budget && <p>Budget: Under {formData?.venue_budget}k</p>}
+      
+      </>
+    )
+  }
   return (
     <>
       <div className={`wedding-checkboxes`}>
