@@ -10,7 +10,24 @@ import CustomButton from "../../Components/CustomButton";
 import placeholderimage from "../../Assets/images/placeholderimage.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
-import { FiUploadCloud } from "react-icons/fi";
+import { FiUploadCloud, FiUser } from "react-icons/fi";
+import { FaCamera, FaPlay } from "react-icons/fa";
+import MultiSelect from "../../Components/MultiSelect";
+import { vendorOptions } from "../../data";
+import Venue from "../../Components/ServiceQuestions/Venue";
+import Photographers from "../../Components/ServiceQuestions/Photographers";
+import Videographer from "../../Components/ServiceQuestions/Videographer";
+import DJ from "../../Components/ServiceQuestions/DJ";
+import Florist from "../../Components/ServiceQuestions/Florist";
+import Planner from "../../Components/ServiceQuestions/Planner";
+import Catering from "../../Components/ServiceQuestions/Catering";
+import MakeupArtist from "../../Components/ServiceQuestions/MakeupArtist";
+import HairStylist from "../../Components/ServiceQuestions/HairStylist";
+import Stationary from "../../Components/ServiceQuestions/Stationary";
+import Rentals from "../../Components/ServiceQuestions/Rentals";
+import Booth from "../../Components/ServiceQuestions/Booth";
+import Bakery from "../../Components/ServiceQuestions/Bakery";
+import toast from "react-hot-toast";
 export const EditVendor = () => {
   const { id } = useParams();
   const apiUrl = process.env.REACT_APP_BASE_URL;
@@ -21,40 +38,26 @@ export const EditVendor = () => {
   const [value, setValue] = useState(RichTextEditor.createEmptyValue());
   const [valuelong, setValuelong] = useState(RichTextEditor.createEmptyValue());
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    image: "", // Initialize image as an empty string
-    agenda: [],
-  });
-  const handleChange = (newValue) => {
-    setValue(newValue);
-    // if (onChange) {
-    //   // Send the changes up to the parent component as an HTML string.
-    //   onChange(newValue.toString("html"));
+  const [formData, setFormData] = useState({});
+  const [selectedVendors, setSelectedVendors] = useState([]);
+
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [vendorTypeError, setVendorTypeError] = useState(false);
+
+  useEffect(() => {
+    // if (selectedVendors.length > 0) {
+    let services = selectedVendors.map((vendor) => {
+      return vendor.value;
+    });
+    // console.log(
+    //   "services",
+    //   services,
+    //   selectedServices.includes("Venue (Ceremony & Reception)")
+    // );
+
+    setSelectedServices(services);
     // }
-  };
-
-  const handleEditorChange = (value) => {
-    setEditorValue(value);
-    setFormData({
-      ...formData,
-      short_description: value.toString("html"), // Convert editor content to HTML
-    });
-  };
-
-  const handleEditorChangelong = (value) => {
-    setEditorValuelong(value);
-    setFormData({
-      ...formData,
-      long_description: value.toString("html"), // Convert editor content to HTML
-    });
-  };
-  const [editorValue, setEditorValue] = useState(
-    RichTextEditor.createEmptyValue()
-  );
-
-  const [editorValuelong, setEditorValuelong] = useState(
-    RichTextEditor.createEmptyValue()
-  );
+  }, [selectedVendors]);
 
   const GenreData = () => {
     const token = localStorage.getItem("admintoken");
@@ -69,9 +72,24 @@ export const EditVendor = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log("fetched user data", data.data);
         document.querySelector(".loaderBox").classList.add("d-none");
         setFormData(data.data);
+        let user = data.data;
+        let initialVendors = [];
+        if (user?.vendor_type) {
+          setSelectedVendors(
+            user.vendor_type.map((item) => ({
+              label: item,
+              value: item,
+            }))
+          );
+          initialVendors = user.vendor_type.map((item) => ({
+            label: item,
+            value: item,
+          }));
+          console.log("initialVendors", initialVendors);
+        }
       })
       .catch((error) => {
         document.querySelector(".loaderBox").classList.add("d-none");
@@ -80,6 +98,7 @@ export const EditVendor = () => {
   };
   useEffect(() => {
     GenreData();
+    document.title = "Wedding Concierge | Edit Vendor";
   }, []);
 
   const handleChanges = (event) => {
@@ -99,28 +118,29 @@ export const EditVendor = () => {
     console.log(formData);
   };
 
-  const filehandleChange = (event) => {
+  const handleProfileChange = (event) => {
     const file = event.target.files[0];
-    const { name } = event.target;
-
-    console.log("image change out", name);
     if (file) {
-      const previewURL = URL.createObjectURL(file); // Generate a preview URL
+      // setImageUpdated(true);
+      const previewURL = URL.createObjectURL(file);
+      setFormData((prevData) => ({
+        ...prevData,
+        image: file,
+        imageFile: previewURL,
+      }));
+    }
+  };
 
-      if (name == "business_Logo") {
-        console.log("image change", name);
-        setFormData((prevData) => ({
-          ...prevData,
-          business_Logo: file, // Store the actual file for backend upload
-          business_Logo_image: previewURL, // Store the preview URL for immediate display
-        }));
-      } else {
-        setFormData((prevData) => ({
-          ...prevData,
-          image: file, // Store the actual file for backend upload
-          imageFile: previewURL, // Store the preview URL for immediate display
-        }));
-      }
+  const handleBusinessLogoChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // setBusinessLogoUpdated(true);
+      const previewURL = URL.createObjectURL(file);
+      setFormData((prevData) => ({
+        ...prevData,
+        business_Logo: file,
+        business_Logo_File: previewURL,
+      }));
     }
   };
 
@@ -136,24 +156,127 @@ export const EditVendor = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // You might want to send raw JSON, not FormData
     const formDataMethod = new FormData();
-    // for (const key in formData) {
-    //   formDataMethod.append(key, formData[key]);
-    // }
 
-    // console.log('portfolio_images' , formData.portfolio_images);
-    
+    // for (const key in formData) {
+    //   if (key === "portfolio_images") {
+    //     const logos = formData[key];
+    //     logos.forEach((logo, ind) => {
+    //       formDataMethod.append("portfolio_images[]", logo); // use same key for all files
+    //     });
+    //   } else {
+    //     formDataMethod.append(key, formData[key]);
+    //   }
+    // }
     for (const key in formData) {
       if (key === "portfolio_images") {
         const logos = formData[key];
         logos.forEach((logo, ind) => {
-          formDataMethod.append("portfolio_images[]", logo); // use same key for all files
+          formDataMethod.append(`portfolio_images[${ind}]`, logo); // use same key for all files
         });
+      } else if (key === "venue_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`venue_type[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "photographer_editing_style") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`photographer_editing_style[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "photographer_shooting_style") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`photographer_shooting_style[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "videography_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`videography_type[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "planner_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`planner_type[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "catering_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`catering_type[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "food_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`food_type[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "dj_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`dj_type[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "hairstylist_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`hairstylist_type[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "bakery_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`bakery_type[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "stationary_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`stationary_type[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "rental_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`rental_type[${ind}]`, logo); // use same key for all files
+          });
+        }
+      } else if (key === "photo_booth_type") {
+        const logos = formData[key];
+        if (logos.length > 0) {
+          logos.forEach((logo, ind) => {
+            formDataMethod.append(`photo_booth_type[${ind}]`, logo); // use same key for all files
+          });
+        }
       } else {
         formDataMethod.append(key, formData[key]);
       }
     }
+    if(vendorTypeError){
+      document.querySelector(".loaderBox").classList.add("d-none");
+      toast.error('Please select at least one Business type!');
+      return
+    }
+    selectedVendors.forEach((vendor, i) => {
+      formDataMethod.append(`vendor_type[${i}]`, vendor.label);
+    });
 
     document.querySelector(".loaderBox").classList.remove("d-none");
 
@@ -171,9 +294,9 @@ export const EditVendor = () => {
       })
       .then((data) => {
         document.querySelector(".loaderBox").classList.add("d-none");
-        console.log(data);
+        console.log('vendor update response',data);
         setMessage(data);
-        if (data?.status == true) {
+        if (data?.success == true) {
           setShowModal(true);
         }
       })
@@ -209,23 +332,49 @@ export const EditVendor = () => {
     { id: "phone", title: "Phone" },
   ];
 
+  const handlePortfolioChange = (event) => {
+    const files = Array.from(event.target.files);
+
+    if (files.length > 0) {
+      setFormData((prevData) => ({
+        ...prevData,
+        portfolio_images: [...(prevData.portfolio_images || []), ...files],
+      }));
+    }
+  };
+
   return (
     <>
       <DashboardLayout>
         <div className="dashCard mb-4">
           <div className="row mb-3">
-            <div className="col-12 mb-2">
+            <div className="col-6 mb-2">
               <h2 className="mainTitle">
                 <BackButton />
                 Edit Vendor
               </h2>
+            </div>
+            <div className="col-6 d-flex justify-content-end mb-2">
+              {/* <button
+                onClick={updateProfile}
+                className="primary-btn update-profile me-auto"
+              >
+                <FaPencil size={16} className="me-2" />
+                Update Profile
+              </button> */}
+              <CustomButton
+                variant="primaryButton"
+                text="Update Profile"
+                type="button"
+                onClick={handleSubmit}
+              />
             </div>
           </div>
           <div className="row mb-3">
             <div className="col-12">
               <form onSubmit={handleSubmit}>
                 <div className="row">
-                  <div className="col-lg-12">
+                  {/* <div className="col-lg-12">
                     <div className="row">
                       <div className="col-md-3 mb-4">
                         <div className="profileImage">
@@ -271,6 +420,84 @@ export const EditVendor = () => {
                         </div>
                       </div>
                     </div>
+                  </div> */}
+                  <div className="col-12  mb-5">
+                    <div className="row justify-content-center gap-5">
+                      <div className="profileImage d-inline-block col-md-3 position-relative">
+                        <p>
+                          <b>Profile Image : </b>
+                        </p>
+                        {formData?.image && formData?.image !== "null" ? (
+                          <img
+                            src={
+                              formData?.imageFile?.startsWith("blob:")
+                                ? formData.imageFile
+                                : `${imageUrl}/${formData.image}`
+                            }
+                            className="img-fluid mt-2 w-100"
+                            alt="User Image"
+                          />
+                        ) : (
+                          <FiUser
+                            size={16}
+                            className="user-icon border border-5-gray "
+                          />
+                        )}
+
+                        <input
+                          type="file"
+                          accept="img/*"
+                          className="d-none"
+                          id="profileImage"
+                          name="image"
+                          onChange={handleProfileChange}
+                        />
+                        <label
+                          htmlFor="profileImage"
+                          className="imageUploadButton"
+                        >
+                          <FaCamera size={16} />
+                        </label>
+                      </div>
+                      <div className="profileImage d-inline-block col-md-3 position-relative">
+                        <p>
+                          <b>Business Logo : </b>
+                        </p>
+                        {formData?.business_Logo ? (
+                          <img
+                            src={
+                              formData?.business_Logo_File?.startsWith("blob:")
+                                ? formData.business_Logo_File
+                                : `${imageUrl}/${formData.business_Logo}`
+                            }
+                            className="img-fluid mt-2 w-100"
+                            alt="User Image"
+                          />
+                        ) : (
+                          <FiUser
+                            size={16}
+                            className="user-icon  border border-5-gray "
+                          />
+                        )}
+
+                        <input
+                          type="file"
+                          accept="img/*"
+                          className="d-none"
+                          id="business_Logo"
+                          name="business_Logo"
+                          onChange={handleBusinessLogoChange}
+                        />
+                        <label
+                          htmlFor="business_Logo"
+                          className="imageUploadButton"
+                        >
+                          <FaCamera size={16} />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12">
                     <div className="row">
                       <div className="col-md-6 mb-4">
                         <CustomInput
@@ -300,94 +527,13 @@ export const EditVendor = () => {
                         />
                       </div>
 
-                      {/* <div className="checkBox col-md-6 mb-4">
-                        <label className="fw-semibold">Vendor type</label>
-                        <div>
-                          <label className="me-2">
-                            <input
-                              type="radio"
-                              name="member_type"
-                              value="1" // Yes = 1
-                              checked={formData?.member_type === 1}
-                              onChange={handlecheck}
-                              className="me-1"
-                            />
-                            Team member
-                          </label>
-                          <label>
-                            <input
-                              type="radio"
-                              name="member_type"
-                              value="2" // No = 0
-                              checked={formData?.member_type === 2}
-                              onChange={handlecheck}
-                              className="me-1"
-                            />
-                            Board Mmber
-                          </label>
-                        </div>
-                      </div> */}
-                      {/* <div className="checkBox col-md-6 mb-4">
-                        <label className="fw-semibold">Show in Mobile</label>
-                        <div>
-                          <label className="me-2">
-                            <input
-                              type="radio"
-                              name="show_in_mobile"
-                              value="1" // Yes = 1
-                              checked={formData?.show_in_mobile === 1}
-                              onChange={handlecheck}
-                              className="me-1"
-                            />
-                            Yes
-                          </label>
-                          <label>
-                            <input
-                              type="radio"
-                              name="show_in_mobile"
-                              value="0" // No = 0
-                              checked={formData?.show_in_mobile === 0}
-                              onChange={handlecheck}
-                              className="me-1"
-                            />
-                            No
-                          </label>
-                        </div>
-                      </div> */}
-                      {/* <div className="checkBox col-md-6 mb-4">
-                        <label className="fw-semibold">Show in Web</label>
-                        <div>
-                          <label className="me-2">
-                            <input
-                              type="radio"
-                              name="show_in_web"
-                              value="1" // Yes = 1
-                              checked={formData?.show_in_web === 1}
-                              onChange={handlecheck}
-                              className="me-1"
-                            />
-                            Yes
-                          </label>
-                          <label>
-                            <input
-                              type="radio"
-                              name="show_in_web"
-                              value="0" // No = 0
-                              checked={formData?.show_in_web === 0}
-                              onChange={handlecheck}
-                              className="me-1"
-                            />
-                            No
-                          </label>
-                        </div>
-                      </div> */}
-
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="   Email"
-                          required
+                          // required
                           id="title"
                           type="text"
+                          disabled
                           placeholder="Enter email"
                           labelClass="mainLabel"
                           inputClass="mainInput"
@@ -404,23 +550,10 @@ export const EditVendor = () => {
                           required
                           value={formData?.status}
                           option={statusOptions}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="D.O.B"
-                          required
-                          id="title"
-                          type="date"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="dob"
-                          // value={formData?.dob}
-                          value={formatToDateInput(formData?.dob)}
                           onChange={handleChanges}
                         />
                       </div>
+
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label=" Business Name"
@@ -449,20 +582,7 @@ export const EditVendor = () => {
                           onChange={handleChanges}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label=" Business Type"
-                          required
-                          id="title"
-                          type="text"
-                          placeholder="Enter Busines Type"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="business_type"
-                          value={formData?.business_type}
-                          onChange={handleChanges}
-                        />
-                      </div>
+
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label=" Business Year"
@@ -485,9 +605,10 @@ export const EditVendor = () => {
                           required
                           value={formData?.prefered_contact}
                           option={contactOptions}
-                          onChange={handleChange}
+                          onChange={handleChanges}
                         />
                       </div>
+
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Package Price"
@@ -502,51 +623,94 @@ export const EditVendor = () => {
                           onChange={handleChanges}
                         />
                       </div>
+
                       <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="Discount Special Offer"
+                          label="Website"
                           required
                           id="title"
                           type="text"
-                          placeholder="Enter Discount Special Offer"
+                          placeholder="Enter Website"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="discount_special_offer"
-                          value={formData?.discount_special_offer}
+                          name="add_website"
+                          value={formData?.add_website}
                           onChange={handleChanges}
                         />
                       </div>
                       <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="Service Area"
+                          label="Facebook"
                           required
                           id="title"
                           type="text"
-                          placeholder="Enter Service Area"
+                          placeholder="Enter Facebook"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="service_area"
-                          value={formData?.service_area}
+                          name="Facebook"
+                          value={formData?.Facebook}
                           onChange={handleChanges}
                         />
                       </div>
                       <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="Service Category"
+                          label="Instagram"
                           required
                           id="title"
                           type="text"
-                          placeholder="Enter Service Category"
+                          placeholder="Enter Instagram"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="service_categories"
-                          value={formData?.service_categories}
+                          name="Instagram"
+                          value={formData?.Instagram}
+                          onChange={handleChanges}
+                        />
+                      </div>
+                      <div className="col-md-6 mb-4">
+                        <CustomInput
+                          label="Recommending Vendor 1"
+                          required
+                          id="title"
+                          type="text"
+                          placeholder="Enter Recommending Vendor 1"
+                          labelClass="mainLabel"
+                          inputClass="mainInput"
+                          name="vendor_1"
+                          value={formData?.vendor_1}
+                          onChange={handleChanges}
+                        />
+                      </div>
+                      <div className="col-md-6 mb-4">
+                        <CustomInput
+                          label="Recommending Vendor 2"
+                          required
+                          id="title"
+                          type="text"
+                          placeholder="Enter Recommending Vendor 2"
+                          labelClass="mainLabel"
+                          inputClass="mainInput"
+                          name="vendor_2"
+                          value={formData?.vendor_2}
+                          onChange={handleChanges}
+                        />
+                      </div>
+                      <div className="col-md-6 mb-4">
+                        <CustomInput
+                          label="Recommending Vendor 3"
+                          required
+                          id="title"
+                          type="text"
+                          placeholder="Enter Recommending Vendor 3"
+                          labelClass="mainLabel"
+                          inputClass="mainInput"
+                          name="vendor_3"
+                          value={formData?.vendor_3}
                           onChange={handleChanges}
                         />
                       </div>
                       <div className="checkBox col-md-6 mb-4">
                         <label className="fw-semibold">
-                          Do You Offer Destination Wedding Service?
+                          Do Vendor Offer Destination Wedding Service?
                         </label>
                         <div>
                           <label className="me-2">
@@ -554,7 +718,7 @@ export const EditVendor = () => {
                               type="radio"
                               name="wedding_service"
                               value="1" // Yes = 1
-                              checked={formData?.wedding_service === 1}
+                              checked={formData?.wedding_service == 1}
                               onChange={handlecheck}
                               className="me-1"
                             />
@@ -565,7 +729,7 @@ export const EditVendor = () => {
                               type="radio"
                               name="wedding_service"
                               value="2" // No = 0
-                              checked={formData?.wedding_service === 0}
+                              checked={formData?.wedding_service == 0}
                               onChange={handlecheck}
                               className="me-1"
                             />
@@ -573,83 +737,312 @@ export const EditVendor = () => {
                           </label>
                         </div>
                       </div>
-
-                      <div className="col-md-6 mb-4"></div>
                       <div className="col-md-6 mb-4">
-                        {/* <CustomInput
-                          label="Upload Product Image"
-                          id="file"
-                          type="file"
+                        <CustomInput
+                          label="Business Description"
+                          required
+                          id="title"
+                          type="textarea"
+                          rows={8}
+                          placeholder="Enter Business Description"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="image"
-                          onChange={filehandleChange}
+                          name="business_description"
+                          value={formData?.business_description}
+                          onChange={handleChanges}
                         />
+                      </div>
+                      <div className="col-md-6 mb-4">
+                        <CustomInput
+                          label="Business Bio"
+                          required
+                          id="title"
+                          type="textarea"
+                          rows={6}
+                          placeholder="Enter Business Bio"
+                          labelClass="mainLabel"
+                          inputClass="mainInput"
+                          name="business_bio"
+                          value={formData?.business_bio}
+                          onChange={handleChanges}
+                        />
+                      </div>
+                      <div className="col-md-6 mb-4">
+                        <CustomInput
+                          label="Business Vision"
+                          required
+                          id="title"
+                          type="textarea"
+                          rows={6}
+                          placeholder="Enter Business Vision"
+                          labelClass="mainLabel"
+                          inputClass="mainInput"
+                          name="business_vision"
+                          value={formData?.business_vision}
+                          onChange={handleChanges}
+                        />
+                      </div>
 
-                        {(formData?.imageFile || formData?.image) && (
-                          <img
-                            src={
-                              formData?.imageFile?.startsWith("blob:")
-                                ? formData.imageFile
-                                : `${apiUrl}/${formData.image}`
-                            }
-                            className="img-fluid mt-2"
-                            alt="Product"
+                      <div className="col-md-6 mb-4"></div>
+                      <div className="mb-3 col-lg-6 mt-3 d-flex justify-content-between align-items-center gap-5">
+                        <div className="editableItem w-100 flex-column align-items-start">
+                          <strong>Business Type</strong>
+                          <span className="text-danger">*</span>{" "}
+                          <MultiSelect
+                            isMulti={true}
+                            placeholder="Select Vendor Type"
+                            className="w-100"
+                            required={true}
+                            options={vendorOptions}
+                            value={selectedVendors}
+                            onChange={(selectedOptions) => {
+                              setSelectedVendors(selectedOptions);
+                              if (
+                                !selectedOptions ||
+                                selectedOptions.length === 0
+                              ) {
+                                setVendorTypeError(true);
+                              } else {
+                                setVendorTypeError(false);
+                              }
+                            }}
                           />
-                        )} */}
+                          {vendorTypeError && (
+                            <span className="text-danger">
+                              Please select at least one Business type!
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-md-6 mb-4"></div>
+
+                      <div className="col-12">
+                        <div className="row">
+                          {/* Venue */}
+                          {selectedServices.includes(
+                            "Venue (Ceremony & Reception)"
+                          ) && (
+                            <div className="mb-3 col-lg-8  mt-3">
+                              <h4 className="fw-bold">Venue:</h4>
+                              <Venue
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {/* Photographer */}
+                          {selectedServices.includes("Photographer") && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">Photographer:</h4>
+                              <Photographers
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {/* Videographer */}
+                          {selectedServices.includes("Videographer") && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">Videographer:</h4>
+                              <Videographer
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {/* DJ */}
+                          {selectedServices.includes("DJ") && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">DJ:</h4>
+                              <DJ
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {/* Florist */}
+                          {selectedServices.includes("Florist") && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">Florist:</h4>
+                              <Florist
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {/* Planner */}
+                          {selectedServices.includes(
+                            "Wedding Planner / Coordinator"
+                          ) && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">Planner:</h4>
+                              <Planner
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {/* Caterer */}
+                          {selectedServices.includes("Caterer") && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">Catering:</h4>
+                              <Catering
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {selectedServices.includes("Makeup Artist") && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">Makeup Artist:</h4>
+                              <MakeupArtist
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {selectedServices.includes("Hair Stylist") && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">Hair Stylist:</h4>
+                              <HairStylist
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {selectedServices.includes(
+                            "Stationery Designer (invitations, menus, programs)"
+                          ) && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">Stationary:</h4>
+                              <Stationary
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {selectedServices.includes(
+                            "Rental Company (tables, chairs, linens, etc.)"
+                          ) && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">Rentals:</h4>
+                              <Rentals
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {selectedServices.includes(
+                            "Photo Booth / 360 Booth"
+                          ) && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">
+                                Photo Booth / 360 Booth:
+                              </h4>
+                              <Booth
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                          {selectedServices.includes(
+                            "Bakery (cake, desserts)"
+                          ) && (
+                            <div className="mb-3 col-lg-8 mt-3">
+                              <h4 className="fw-bold">
+                                Bakery (cake, desserts):
+                              </h4>
+                              <Bakery
+                                setFormData={setFormData}
+                                formData={formData}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className=" mb-4">
                         <div className="wedding-form-group">
                           <label className="upload-box upload-box__portfolio">
-                            <p>Upload Portfolio Images</p>
+                            <p>Upload Portfolio Images/Videos</p>
                             <FiUploadCloud size={30} />
                             <input
                               type="file"
                               name="portfolio_images[]"
                               accept="image/*"
                               multiple
-                              onChange={(e) => {
-                                const files = Array.from(e.target.files);
-                                setFormData({
-                                  ...formData,
-                                  portfolio_images: [
-                                    ...(formData.portfolio_images || []),
-                                    ...files,
-                                  ],
-                                });
-                              }}
+                              onChange={handlePortfolioChange}
+                              // onChange={(e) => {
+                              //   const files = Array.from(e.target.files);
+                              //   setFormData({
+                              //     ...formData,
+                              //     portfolio_images: [
+                              //       ...(formData.portfolio_images || []),
+                              //       ...files,
+                              //     ],
+                              //   });
+                              // }}
                               hidden
                             />
                           </label>
                           {formData?.portfolio_images &&
                             formData?.portfolio_images.length > 0 && (
                               <div className="preview-grid">
-                                {formData.portfolio_images.map((img, idx) => (
-                                  <div className="preview-box" key={idx}>
-                                    <img
-                                      src={`${imageUrl}/${img}`}
-                                      alt={`Portfolio ${idx}`}
-                                    />
-                                    <button
-                                      type="button"
-                                      onClick={() =>
-                                        setFormData((prev) => ({
-                                          ...prev,
-                                          portfolio_images:
-                                            prev.portfolio_images.filter(
-                                              (_, i) => i !== idx
-                                            ),
-                                        }))
-                                      }
-                                    >
-                                      ❌
-                                    </button>
-                                  </div>
-                                ))}
+                                {formData.portfolio_images.map((media, idx) => {
+                                  // const isFile = img instanceof File;
+                                  // const src = isFile
+                                  //   ? URL.createObjectURL(img)
+                                  //   : `${import.meta.env.VITE_BASE_IMAGE_URL}/${img}`;
+                                  const isFile = media instanceof File;
+                                  const fileType = isFile
+                                    ? media.type
+                                    : media?.includes(".mp4") ||
+                                      media?.includes(".webm") ||
+                                      media?.includes(".mov")
+                                    ? "video"
+                                    : "image";
+
+                                  const src = isFile
+                                    ? URL.createObjectURL(media)
+                                    : `${imageUrl}/${media}`;
+                                  return (
+                                    <div className="preview-box" key={idx}>
+                                      {/* <img src={src} alt={`Portfolio ${idx}`} /> */}
+                                      {fileType === "video/mp4" ||
+                                      fileType === "video" ? (
+                                        <div className="position-relative">
+                                          <video src={src} width="100%" />
+                                          <FaPlay color="white" />
+                                        </div>
+                                      ) : (
+                                        <img
+                                          src={src}
+                                          alt={`Portfolio ${idx}`}
+                                        />
+                                      )}
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          setFormData((prev) => ({
+                                            ...prev,
+                                            portfolio_images:
+                                              prev.portfolio_images.filter(
+                                                (_, i) => i !== idx
+                                              ),
+                                          }))
+                                        }
+                                      >
+                                        ❌
+                                      </button>
+                                    </div>
+                                  );
+                                })}
                               </div>
                             )}
                         </div>
                       </div>
 
-                      <div className="col-md-12">
+                      <div className="col-md-12 d-flex justify-content-end">
                         <CustomButton
                           variant="primaryButton"
                           text="Submit"

@@ -27,6 +27,10 @@
     align-items: center;
 }
 
+.notiDropdown .dropdown-toggle::after {
+    content: none;
+}
+
 /*----- Logo Start -----*/
 
 .siteLogo {
@@ -68,7 +72,7 @@
 }
 
 .notificationsBody {
-    height: 160px;
+    max-height: 400px;
     overflow-y: auto;
 }
 
@@ -86,13 +90,13 @@
 }
 
 .singleNoti {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    text-decoration: none;
+    align-items: center;
     background: #fff;
-    padding: 0.5rem 0.5rem;
-    transition: 0.3s linear;
+    display: flex;
+    gap: 1rem;
+    padding: .5rem;
+    text-decoration: none;
+    transition: .3s linear;
 }
 
 .singleNoti:hover {
@@ -124,11 +128,22 @@
     -webkit-box-orient: vertical;
 }
 
+.notiBody {
+    font-size: 16px;
+    margin: 0;
+    color: #3f3f3f;
+}
+.notiBody::first-letter{
+    text-transform: capitalize;
+
+}
+
 .notiDateTime {
     font-size: 13px;
     margin: 0;
     color: #ccc;
 }
+
 
 .notiFooter a {
     color: #ccc;
@@ -141,6 +156,29 @@
     /* border-top: 1px solid #ccc; */
     text-align: end;
     padding: 0.5rem 0.5rem;
+}
+
+.notification-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notiCloseBtn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    background: transparent;
 }
 
 
@@ -205,5 +243,3 @@
 
 
 }
-
-   

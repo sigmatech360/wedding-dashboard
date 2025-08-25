@@ -44,7 +44,6 @@ const initialState = {
         const { token, user } = action.payload;
         state.user = user;
         state.isAuthenticated = true;
-        console.log('user', user);
         localStorage.setItem('admintoken', token)
         localStorage.setItem('adminrole', user.role)
         localStorage.setItem('adminuser', JSON.stringify(user))

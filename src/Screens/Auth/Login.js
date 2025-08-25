@@ -8,6 +8,7 @@ import CustomInput from "../../Components/CustomInput";
 import toast from "react-hot-toast";
 import { useDispatch } from "../../store";
 import { setLogin } from "../../store/slices/user";
+import {  getEchoInstance } from "../../echo";
 
 const AdminLogin = () => {
   const apiUrl = `${process.env.REACT_APP_BASE_URL}/login`;
@@ -53,6 +54,7 @@ const AdminLogin = () => {
         dispatch(setLogin({ token: responseData.token, user: responseData?.data }));
         document.querySelector(".loaderBox").classList.add("d-none");
         if(responseData?.data?.role == 0 ){
+          getEchoInstance(responseData.token);
 
           navigate("/dashboard");
         }

@@ -24,6 +24,8 @@ const CustomPagination = ({ itemsPerPage, totalItems, currentPage, onPageChange 
     return (
       <div className="paginationBar align-items-center">
         <p> {firstItem} - {lastItem} out of {totalItems} Entries</p>
+        {totalItems > itemsPerPage && (
+
         <ul>
           <li><button 
           onClick={() => onPageChange(currentPage-1)}
@@ -36,6 +38,7 @@ const CustomPagination = ({ itemsPerPage, totalItems, currentPage, onPageChange 
           ))}
           <li><button disabled={currentPage === totalPages} onClick={() => onPageChange(currentPage+1)}>Next</button></li>
         </ul>
+        )}
       </div>
     );
   };

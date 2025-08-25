@@ -6,12 +6,15 @@ import {FiAirplay, FiUser, FiUsers} from "react-icons/fi";
 import { BsPersonWorkspace } from "react-icons/bs";
 import "./style.css";
 import { useEffect, useState } from "react";
+import { FaUserCheck } from "react-icons/fa";
+import { VscFeedback } from "react-icons/vsc";
 
 const adminSideBarNavlinks = [
   { title: 'Dashboard', link: '/dashboard', icon: <FiAirplay size={16} /> },
   { title: 'User Management', link: '/user-management', icon: <FiUsers size={16} /> },
-  { title: 'Vendor Management', link: '/vendor-management', icon: <BsPersonWorkspace size={16} /> }
-  // { title: 'Event Assign Management', link: '/interested-volunteer-management', icon: VolunteersManagement },
+  { title: 'Vendor Management', link: '/vendor-management', icon: <BsPersonWorkspace size={16} /> },
+  { title: 'Hired Vendors', link: '/hired-vendors', icon: <FaUserCheck size={16} /> },
+  { title: 'Feedback Management', link: '/feedback-management', icon: <VscFeedback size={16} /> },
   // { title: 'Create Notification', link: '/create-notification', icon: VolunteersManagement },
   // { title: 'CMS Stats', link: '/stats', icon: EventManagement },
   // { title: 'Programs Management', link: '/programs-management', icon: ProgramsManagement },

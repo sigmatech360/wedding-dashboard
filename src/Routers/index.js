@@ -22,6 +22,9 @@ import { EditVendor } from "../Screens/VendorManagement/EditVendor";
 import { VendorManagement } from "../Screens/VendorManagement";
 import { VendorDetail } from "../Screens/VendorManagement/VendorDetail";
 import { AddVendor } from "../Screens/VendorManagement/AddVendor";
+import { HiredVendors } from "../Screens/HiredVendors";
+import { FeedbackManagement } from "../Screens/FeedbackManagement";
+import FeedbackDetails from "../Screens/FeedbackManagement/FeedbackDetails";
 
 
 export default function AdminRouter() {
@@ -36,6 +39,9 @@ export default function AdminRouter() {
 
         <Route path="/dashboard" element={<ProtectedRoutes Components={Dashboard} />} />
 
+        <Route path="/feedback-management" element={<ProtectedRoutes Components={FeedbackManagement} />} />
+        <Route path="/feedback-management/:id" element={<ProtectedRoutes Components={FeedbackDetails} />} />
+
         <Route path="/vendor-management" element={<ProtectedRoutes Components={VendorManagement} />} />
         <Route path="/add-vendor" element={<ProtectedRoutes Components={AddVendor} />} />
         <Route path="/vendor-management/vendor-details/:id" element={<ProtectedRoutes Components={VendorDetail} />} />
@@ -47,6 +53,7 @@ export default function AdminRouter() {
         <Route path="/add-user/" element={<ProtectedRoutes Components={AddUser} />} />
         <Route path="/edit-user/:id" element={<ProtectedRoutes Components={EditUser} />} />
 
+        <Route path="/hired-vendors" element={<ProtectedRoutes Components={HiredVendors} />} />
 
         <Route path="/profile" element={<ProtectedRoutes Components={Profile} />} />
         <Route path="/profile/edit-profile" element={<ProtectedRoutes Components={EditProfile} />} />

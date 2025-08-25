@@ -28,7 +28,7 @@ export const Dashboard = () => {
         },
       }).then(res => res.json())
       .then((data)=>{
-        console.log(data.data);
+        // console.log(data.data);
         setVendors(data?.data)
       }).catch((error)=>{
         console.log('Error in fetching Error' , error);
@@ -47,7 +47,7 @@ export const Dashboard = () => {
         },
       }).then(res => res.json())
       .then((data)=>{
-        console.log(data.data);
+        // console.log(data.data);
         setUsers(data?.data)
       }).catch((error)=>{
         console.log('Error in fetching Error' , error);

@@ -19,11 +19,19 @@ import { notifications } from "../../../Config/Data";
 import "./style.css";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../../../store/slices/user";
+import { useNotifications } from "../../../context/NotificationContext";
+import axios from "axios";
+import { getEcho } from "../../../echo";
 
 
 export const Header = (props) => {
 
-  const [notificationState, setNotificationState] = useState([])
+  const {
+    notifications,
+    updateNotifications,
+    totalUnreadNotifications,
+    setTotalUnreadNNotifications,
+  } = useNotifications();
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [role,setRole] = useState();
@@ -58,6 +66,11 @@ export const Header = (props) => {
       .then((data) => {
         console.log(data)
         dispatch(setLogout())
+        let echo = getEcho();
+        if(echo){
+          // echo.leave('admin');
+          echo.disconnect();
+        }
         navigate('/');
       })
       .catch((error) => {
@@ -71,8 +84,8 @@ export const Header = (props) => {
 
 
   useEffect(() => {
-    setNotificationState(notifications)
-  }, [])
+    updateNotifications();
+  }, []);
 
 
   const [userData, setUserData] = useState()
@@ -93,7 +106,7 @@ export const Header = (props) => {
       .then((response) => response.json())
       .then((data) => {
         document.querySelector(".loaderBox").classList.add("d-none");
-        console.log('header usre data', data?.data);
+        // console.log('header usre data', data?.data);
         
         setUserData(data?.data);
       })
@@ -101,6 +114,30 @@ export const Header = (props) => {
         document.querySelector(".loaderBox").classList.add("d-none");
         console.log(error);
       });
+  };
+
+  const markAllAsRead = async (isOpen) => {
+    if (isOpen && totalUnreadNotifications > 0) {
+      try {
+        // const baseURL = `${import.meta.env.VITE_BASE_URL}`;
+        const token = localStorage.getItem("admintoken");
+
+        const response = await axios.get(
+          `${apiUrl}/notifications/mark-all-as-read`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = response.data;
+        if (data.status) {
+          setTotalUnreadNNotifications(0);
+        }
+      } catch (error) {
+        console.error("Error fetching notifications :", error);
+      }
+    }
   };
 
 
@@ -159,6 +196,59 @@ export const Header = (props) => {
                   </div>
                 </Dropdown.Menu>
               </Dropdown> */}
+              <Dropdown onToggle={markAllAsRead} className="notiDropdown me-2">
+                <Dropdown.Toggle variant="transparent" className="notButton">
+                  <div className="position-relative">
+                    <span className="notification-count">
+                      {totalUnreadNotifications}
+                    </span>
+
+                    <FontAwesomeIcon className="bellIcon" icon={faBell} />
+                  </div>
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="notiMenu" align="end">
+                  <div className="notiHead p-3 pb-0">
+                    <h4 className="mainTitle">Notifications</h4>
+                  </div>
+                  <div className="notificationsBody">
+                    {notifications.map((notification) => (
+                      <>
+                        <Link
+                          // to={`/orders/${notification?.data?.order_id}`}
+                          // to={{
+                          //   pathname: `/orders/${notification?.data?.order_id}`,
+                          //   search:
+                          //     notification?.data?.title === "Order Placed"
+                          //       ? ""
+                          //       : "?showModal=true",
+                          // }}
+                          className="singleNoti"
+                          key={notification.id}
+                        >
+                          <div className="singleNotiIcon">
+                            <FontAwesomeIcon
+                              className="notiIcon"
+                              icon={faBell}
+                            />
+                          </div>
+                          <div className="singleNotiContent">
+                            <p className="notiText fw-bold">
+                              {notification?.data?.title}
+                            </p>
+                            <p className="notiBody">
+                              {/* {notification.date} | {notification.time} */}
+                              {notification?.data.body}
+                            </p>
+                          </div>
+                        </Link>
+                      </>
+                    ))}
+                  </div>
+                  {/* <div className="notiFooter">
+                    <Link to={"/notifications"}>View All</Link>
+                  </div> */}
+                </Dropdown.Menu>
+              </Dropdown>
               <Dropdown className="userDropdown">
                 <Dropdown.Toggle
                   variant="transparent"

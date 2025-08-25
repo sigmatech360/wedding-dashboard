@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
-import placeholderimage from '../../Assets/images/placeholderimage.png'
+import placeholderimage from "../../Assets/images/placeholderimage.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEllipsisV,
   faEye,
-
   faEdit,
   faTrash,
   faCheck,
@@ -24,9 +23,9 @@ import CustomButton from "../../Components/CustomButton";
 
 import "./style.css";
 import toast from "react-hot-toast";
+import { FaRegStar, FaStar } from "react-icons/fa";
 
-export const VendorManagement = () => {
-
+export const FeedbackManagement = () => {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -36,117 +35,78 @@ export const VendorManagement = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState("");
 
-
-
   const [showModal5, setShowModal5] = useState(false);
   const [showModal6, setShowModal6] = useState(false);
   const [showModal7, setShowModal7] = useState(false);
 
-  const [handledeleteid, setHandledeleteid] = useState()
-  const [handleApproveid, setHandApproveid] = useState()
+  const [handledeleteid, setHandledeleteid] = useState();
+  const [handleApproveid, setHandApproveid] = useState();
 
   const handleApprove = (id) => {
-    setShowModal5(true)
-    setHandApproveid(id) 
-  }
-  
+    setShowModal5(true);
+    setHandApproveid(id);
+  };
+
   const ApproveVendor = () => {
     const token = localStorage.getItem("admintoken");
     document.querySelector(".loaderBox").classList.remove("d-none");
-    
-    
-    fetch(`${apiUrl}/vendor/${handleApproveid}/status`, {
-      method: "POST",
-      body: JSON.stringify({status:'approved'}),
-      headers: {
-          'Accept': 'application/json',
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('aPPROVED ',data?.data);
-        document.querySelector(".loaderBox").classList.add("d-none");
-        toast.success("Vendor Approved Successfully");
-        // setData(data?.data);
-        Vendorlist();
-      })
-      .catch((error) => {
-        document.querySelector(".loaderBox").classList.add("d-none");
-        console.log(error);
-      });
-  }
-  const handleDelete = (id) => {
-    setShowModal7(true)
-    setHandledeleteid(id) 
-  }
-  
-  const deleteVendor = () => {
-    const token = localStorage.getItem("admintoken");
-    document.querySelector(".loaderBox").classList.remove("d-none");
-    
-    
-    fetch(`${apiUrl}/vendor/${handledeleteid}/delete`, {
-      method: "POST",
-      // body: JSON.stringify({status:'approved'}),
-      headers: {
-          'Accept': 'application/json',
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Vendor Deleted ',data?.data);
-        document.querySelector(".loaderBox").classList.add("d-none");
-        toast.success("Vendor Deleted Successfully");
-        // setData(data?.data);
-        Vendorlist();
-      })
-      .catch((error) => {
-        document.querySelector(".loaderBox").classList.add("d-none");
-        console.log(error);
-      });
-  }
 
-  const [handleRejectid, setHandRejectid] = useState()
+    fetch(`${apiUrl}/feedback-status/${handleApproveid}`, {
+      method: "POST",
+      body: JSON.stringify({ status: "approved" }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("aPPROVED ", data?.data);
+        document.querySelector(".loaderBox").classList.add("d-none");
+        toast.success("Feedback Approved Successfully");
+        // setData(data?.data);
+        Feedbacklist();
+      })
+      .catch((error) => {
+        document.querySelector(".loaderBox").classList.add("d-none");
+        console.log(error);
+      });
+  };
+
+  const [handleRejectid, setHandRejectid] = useState();
 
   const handleReject = (id) => {
-    setShowModal6(true)
-    setHandRejectid(id) 
-  }
+    setShowModal6(true);
+    setHandRejectid(id);
+  };
 
   const RejectVendor = () => {
     const token = localStorage.getItem("admintoken");
     document.querySelector(".loaderBox").classList.remove("d-none");
-    
-    
-    fetch(`${apiUrl}/vendor/${handleRejectid}/status`, {
+
+    fetch(`${apiUrl}/feedback-status/${handleRejectid}`, {
       method: "POST",
-      body: JSON.stringify({status:'rejected'}),
+      body: JSON.stringify({ status: "rejected" }),
       headers: {
-          'Accept': 'application/json',
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        },
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('rejected ',data?.data);
+        console.log("rejected ", data?.data);
         document.querySelector(".loaderBox").classList.add("d-none");
         // setData(data?.data);
-        Vendorlist();
-        toast.success("Vendor Rejected Successfully");
+        Feedbacklist();
+        toast.success("Feedback Rejected Successfully");
       })
       .catch((error) => {
         document.querySelector(".loaderBox").classList.add("d-none");
         console.log(error);
       });
-  }
-
-
-
+  };
 
   const navigate = useNavigate();
 
@@ -172,7 +132,7 @@ export const VendorManagement = () => {
   };
 
   const filterData = data?.filter((item) =>
-    item?.name.toLowerCase().includes(inputValue.toLowerCase())
+    item?.vendor_data?.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -204,35 +164,57 @@ export const VendorManagement = () => {
         console.log(error);
       });
   };
+  const Feedbacklist = () => {
+    const token = localStorage.getItem("admintoken");
+    document.querySelector(".loaderBox").classList.remove("d-none");
+    fetch(`${apiUrl}/all-feedback`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Feedback Data", data?.data);
+        document.querySelector(".loaderBox").classList.add("d-none");
+        setData(data?.data);
+      })
+      .catch((error) => {
+        document.querySelector(".loaderBox").classList.add("d-none");
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     document.title = "Wedding Concierge | Vendor Management";
-    Vendorlist();
+    // Vendorlist();
+    Feedbacklist();
   }, []);
-
 
   const maleHeaders = [
     {
       key: "id",
       title: "S.No",
     },
-    {
-      key: "business_Logo",
-      title: "Business Logo",
-    },
-    {
-      key: "name",
-      title: "  Name",
-    },
     // {
-    //   key: "phone",
-    //   title: "phone",
+    //   key: "business_Logo",
+    //   title: "Business Logo",
     // },
     {
-      key: "phone",
-      title: "phone No",
+      key: "name",
+      title: "Vendor Name",
     },
-    
+    {
+      key: "username",
+      title: "User Name",
+    },
+    {
+      key: "feedback",
+      title: "Feedback",
+    },
+
     {
       key: "status",
       title: "Status",
@@ -243,29 +225,6 @@ export const VendorManagement = () => {
     },
   ];
 
-  // const DeleteMember = ( ) => {
-  //   const token = localStorage.getItem("admintoken");
-  //   document.querySelector(".loaderBox").classList.remove("d-none");
-  //   fetch(`${apiUrl}/api/admin/member/${handledeleteid}`, {
-  //     method: "DELETE",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       document.querySelector(".loaderBox").classList.add("d-none");
-  //       Vendorlist();
-  //     })
-  //     .catch((error) => {
-  //       document.querySelector(".loaderBox").classList.add("d-none");
-  //       console.log(error);
-  //     });
-  // };
-
   return (
     <>
       <DashboardLayout>
@@ -275,7 +234,7 @@ export const VendorManagement = () => {
               <div className="dashCard">
                 <div className="row mb-3 justify-content-between">
                   <div className="col-md-6 mb-2">
-                    <h2 className="mainTitle">Vendor Management</h2>
+                    <h2 className="mainTitle">Feedback Management</h2>
                   </div>
                   <div className="col-md-4 mb-2">
                     <div className="addUser">
@@ -301,7 +260,7 @@ export const VendorManagement = () => {
                         {currentItems?.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>
+                            {/* <td>
                               <img
                                 src={
                                   item?.business_Logo
@@ -310,17 +269,56 @@ export const VendorManagement = () => {
                                 }
                                 className="avatarIcon"
                               />
-                            </td>
-                            <td className="text-capitalize">
+                            </td> */}
+                            {/* <td className="text-capitalize">
                               {item?.name == null
                                 ? "No Title Available"
                                 : item?.name}
+                            </td> */}
+                            <td className="text-capitalize">
+                              <Link
+                                to={`/vendor-management/vendor-details/${item?.vendor_data?.id}`}
+                              >
+                                {item?.vendor_data?.name}
+                              </Link>
                             </td>
-                            {/* <td className="text-capitalize">{item?.name}</td> */}
-                            <td>   {item?.phone == null
-                              ? "No Phone No Available"
-                              : item?.phone}</td>
-                            <td className={`${item?.status == "approved" ? 'text-success' : "text-danger"} text-capitalize`}>{item?.status}</td>
+                            <td className="text-capitalize">
+                              <Link to={`/user-detail/${item?.user_data?.id}`}>
+                                {item?.user_data?.name}
+                              </Link>
+                            </td>
+                            <td className="text-capitalize">
+                              <div className="m-0">
+                                <p className="m-0 mb-1">
+                                  {[1, 2, 3, 4, 5].map((i) =>
+                                    i <= parseInt(item?.rating) ? (
+                                      <FaStar
+                                        key={i}
+                                        size={20}
+                                        color="#ffc107"
+                                      />
+                                    ) : (
+                                      <FaRegStar
+                                        key={i}
+                                        size={20}
+                                        color="#ffc107"
+                                      />
+                                    )
+                                  )}
+                                </p>
+                                {/* <p className="m-0 feedback">Lorem10 Lorem10 Lorem10 Lorem10 Lorem10</p> */}
+                                <p className="m-0 feedback">{item?.feedback}</p>
+                              </div>
+                            </td>
+                            <td
+                              className={`${
+                                item?.status == "approved"
+                                  ? "text-success"
+                                  : "text-danger"
+                              } text-capitalize`}
+                            >
+                              {item?.status}
+                            </td>
                             <td>
                               {/* <Link to={`/vendor-management/vendor-details/${item?.id}`} className="btn btn-secondary py-1">View</Link> */}
                               <Dropdown className="tableDropdown">
@@ -335,7 +333,7 @@ export const VendorManagement = () => {
                                   className="tableDropdownMenu"
                                 >
                                   <Link
-                                    to={`/vendor-management/vendor-details/${item?.id}`}
+                                    to={`/feedback-management/${item?.hire_id}`}
                                     className="tableAction"
                                   >
                                     <FontAwesomeIcon
@@ -344,7 +342,7 @@ export const VendorManagement = () => {
                                     />
                                     View
                                   </Link>
-                                  <Link
+                                  {/* <Link
                                     to={`/vendor-management/edit-vendor/${item?.id}`}
                                     className="tableAction"
                                   >
@@ -353,34 +351,41 @@ export const VendorManagement = () => {
                                       className="tableActionIcon"
                                     />
                                     Edit
-                                  </Link>
-                                {item?.status != "approved" ?  (
-
-                                  <button
-                                    type="button"
-                                    className="tableAction border-0 ps-lg-3 pt-1"
-                                    onClick={() => handleApprove(item?.id)}
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faCheck} className="text-success"
-                                    ></FontAwesomeIcon>{" "}
-                                     Approve
-                                  </button>
-                                ):(
-
-                                  <button
-                                    type="button"
-                                    className="tableAction border-0 ps-lg-3 pt-1"
-                                    onClick={() => handleReject(item?.id)}
-                                  >
-                                    {/* <FontAwesomeIcon
+                                  </Link> */}
+                                  {item?.status != "approved" && (
+                                    <button
+                                      type="button"
+                                      className="tableAction border-0 ps-lg-3 pt-1"
+                                      onClick={() =>
+                                        handleApprove(item?.hire_id)
+                                      }
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        className="text-success"
+                                      ></FontAwesomeIcon>{" "}
+                                      Approve
+                                    </button>
+                                  )}
+                                  {item?.status != "rejected" && (
+                                    <button
+                                      type="button"
+                                      className="tableAction border-0 ps-lg-3 pt-1"
+                                      onClick={() =>
+                                        handleReject(item?.hire_id)
+                                      }
+                                    >
+                                      {/* <FontAwesomeIcon
                                       icon={faTrash}
                                     ></FontAwesomeIcon>{" "} */}
-                                    <FontAwesomeIcon icon={faXmark} className="text-danger" />{" "}
-                                    Reject
-                                  </button>
-                                )}
-                                <button
+                                      <FontAwesomeIcon
+                                        icon={faXmark}
+                                        className="text-danger"
+                                      />{" "}
+                                      Reject
+                                    </button>
+                                  )}
+                                  {/* <button
                                     type="button"
                                     className="tableAction border-0 ps-lg-3 pt-1"
                                     onClick={() => handleDelete(item?.id)}
@@ -389,7 +394,7 @@ export const VendorManagement = () => {
                                       icon={faTrash}
                                     ></FontAwesomeIcon>{" "} 
                                     Delete
-                                  </button>
+                                  </button> */}
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
@@ -443,11 +448,28 @@ export const VendorManagement = () => {
             heading="Marked as Active"
           />
 
-
-
-          <CustomModal show={showModal5} close={() => { setShowModal5(false) }} action={() => { setShowModal5(false); ApproveVendor() }} heading={" Do you want to Approve this Vendor ?"} />
-          <CustomModal show={showModal6} close={() => { setShowModal6(false) }} action={() => { setShowModal6(false); RejectVendor() }} heading={" Do you want to Reject this Vendor ?"} />
-          <CustomModal show={showModal7} close={() => { setShowModal7(false) }} action={() => { setShowModal7(false); deleteVendor() }} heading={" Do you want to Delete this Vendor ?"} />
+          <CustomModal
+            show={showModal5}
+            close={() => {
+              setShowModal5(false);
+            }}
+            action={() => {
+              setShowModal5(false);
+              ApproveVendor();
+            }}
+            heading={" Do you want to Approve this Vendor ?"}
+          />
+          <CustomModal
+            show={showModal6}
+            close={() => {
+              setShowModal6(false);
+            }}
+            action={() => {
+              setShowModal6(false);
+              RejectVendor();
+            }}
+            heading={" Do you want to Reject this Vendor ?"}
+          />
         </div>
       </DashboardLayout>
     </>

@@ -9,6 +9,19 @@
     background-color: #000;
 }
 
+.wedding-checkboxes {
+    /* display: flex;
+    column-gap: 30px;
+    flex-wrap: wrap; */
+    display: grid;
+    grid-template-columns: auto auto;
+    row-gap: 6px;
+    padding-right: 16px;
+}
+.weddingForm_subDropdown {
+    margin-top: 10px;
+}
+
 .productImage img {
     width: 100%;
     object-fit: cover;
@@ -37,42 +50,52 @@
 .preview-grid {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
     margin-top: 20px;
 }
 
 .preview-grid .preview-box {
-  position: relative;
+    position: relative;
 }
 
+.preview-grid video,
 .preview-grid img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.preview-grid .preview-box div svg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .preview-grid button {
-  position: absolute;
-  top: -10px;
-  right: -13px;
-  border: none;
-  color: white;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 12px;
-  padding: 2px 5px;
+    position: absolute;
+    top: -10px;
+    right: -13px;
+    border: none;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 5px;
 }
 
-.gallery-image{
+.gallery-image {
     border: 1px solid black;
-        object-fit: cover;
+    object-fit: cover;
     height: 100%;
     transition: all 0.3s;
     border-radius: 10px;
 }
-.gallery-image:hover{
-    box-shadow: 5px 5px 5px rgba(0,0,0,0.2);
+
+.gallery-image:hover {
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
     transform: scale(1.01);
 }
 

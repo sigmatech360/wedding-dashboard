@@ -64,7 +64,7 @@ th {
     font-weight: 600;
     display: block;
     text-align: left;
-    text-decoration: none;
+    text-decoration: none !important;
     padding: 0.5rem 1rem;
     color: #333;
     background: #fff0;
@@ -76,11 +76,21 @@ th {
 
 .tableAction:hover {
     background: var(--primaryColor);
-    color: #fff;
+    color: #fff !important;
 }
 
 .tableActionIcon {
     font-size: 15px;
     margin-right: 0.5rem;
     width: 1rem;
+}
+
+.customTable td a{
+    /* text-decoration: none; */
+    color: inherit;
+}
+.customTable td a:hover{
+    text-decoration: underline;
+    color: #0d6efd;
+    /* color: var(--primaryColor); */
 }
