@@ -422,8 +422,8 @@ export const EditVendor = () => {
                     </div>
                   </div> */}
                   <div className="col-12  mb-5">
-                    <div className="row justify-content-center gap-5">
-                      <div className="profileImage d-inline-block col-md-3 position-relative">
+                    <div className="d-flex justify-content-center flex-wrap gap-5">
+                      <div className="profileImage d-inline-block  position-relative">
                         <p>
                           <b>Profile Image : </b>
                         </p>
@@ -439,7 +439,7 @@ export const EditVendor = () => {
                           />
                         ) : (
                           <FiUser
-                            size={16}
+                            size={160}
                             className="user-icon border border-5-gray "
                           />
                         )}
@@ -459,7 +459,7 @@ export const EditVendor = () => {
                           <FaCamera size={16} />
                         </label>
                       </div>
-                      <div className="profileImage d-inline-block col-md-3 position-relative">
+                      <div className="profileImage d-inline-block  position-relative">
                         <p>
                           <b>Business Logo : </b>
                         </p>
@@ -475,7 +475,7 @@ export const EditVendor = () => {
                           />
                         ) : (
                           <FiUser
-                            size={16}
+                            size={160}
                             className="user-icon  border border-5-gray "
                           />
                         )}

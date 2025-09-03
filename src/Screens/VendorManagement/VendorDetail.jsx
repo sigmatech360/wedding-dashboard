@@ -248,7 +248,7 @@ export const VendorDetail = () => {
                     />
                   ) : (
                     <FiUser
-                      size={16}
+                      size={160}
                       className="user-icon border border-5-gray "
                     />
                   )}
@@ -269,7 +269,7 @@ export const VendorDetail = () => {
                     />
                   ) : (
                     <FiUser
-                      size={16}
+                      size={160}
                       className="user-icon  border border-5-gray "
                     />
                   )}
@@ -381,19 +381,19 @@ export const VendorDetail = () => {
                 {/* Business Description */}
                 <div className="col-md-6 mb-4">
                   <label className="mainLabel">Business Description</label>
-                  <p>{data?.business_description}</p>
+                  <p>{data?.business_description || 'No Business Description'}</p>
                 </div>
 
                 {/* Business Bio */}
                 <div className="col-md-6 mb-4">
                   <label className="mainLabel">Business Bio</label>
-                  <p>{data?.business_bio}</p>
+                  <p>{data?.business_bio || 'No Business Bio'}</p>
                 </div>
 
                 {/* Business Vision */}
                 <div className="col-md-6 mb-4">
                   <label className="mainLabel">Business Vision</label>
-                  <p>{data?.business_vision}</p>
+                  <p>{data?.business_vision || 'No Business Vision'}</p>
                 </div>
                 <div className="col-md-6 mb-4"></div>
 
@@ -517,180 +517,225 @@ export const VendorDetail = () => {
                   <div className="row">
                     {data?.vendor_type?.includes(
                       "Venue (Ceremony & Reception)"
-                    ) && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Venues:</h4>
-                        <ul>
-                          {data?.venue_type?.map((venue, index) => (
-                            <li key={index}>{venue}</li>
-                          ))}
-                        </ul>
-                        <label className="mainLabel">Budget</label>
-                        {data?.venue_budget && (
-                          <p>Under {data?.venue_budget}k</p>
-                        )}
-                      </div>
-                    )}
-
-                    {data?.vendor_type?.includes("Photographer") && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Photographer:</h4>
-                        <ul>
-                          {data?.photographer_editing_style?.map((style, i) => (
-                            <li key={i}>{style}</li>
-                          ))}
-                          {data?.photographer_shooting_style?.map(
-                            (style, i) => (
-                              <li key={`shoot-${i}`}>{style}</li>
-                            )
+                    ) &&
+                      (Array.isArray(data?.venue_type) ||
+                        data?.venue_budget) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Venues:</h4>
+                          {Array.isArray(data?.venue_type) && (
+                            <ul>
+                              {data?.venue_type?.map((venue, index) => (
+                                <li key={index}>{venue}</li>
+                              ))}
+                            </ul>
                           )}
-                        </ul>
-                        <label className="mainLabel">Budget</label>
-                        {data?.photographer_budget && (
-                          <p>Under {data?.photographer_budget}k</p>
-                        )}
-                      </div>
-                    )}
-
-                    {data?.vendor_type?.includes("Videographer") && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Videographer:</h4>
-                        <ul>
-                          {data?.videography_type?.map((type, i) => (
-                            <li key={i}>{type}</li>
-                          ))}
-                          {data?.videography_categories && (
-                            <li>{data?.Videography_categories}</li>
+                          {data?.venue_budget && (
+                            <>
+                              <label className="mainLabel">Budget</label>
+                              <p>Under {data?.venue_budget}k</p>
+                            </>
                           )}
-                        </ul>
-                        <label className="mainLabel">Budget</label>
-                        {data?.videography_budget && (
-                          <p>Under {data?.videography_budget}k</p>
-                        )}
-                      </div>
-                    )}
+                        </div>
+                      )}
 
-                    {data?.vendor_type?.includes("DJ") && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">DJ:</h4>
-                        <ul>
-                          {data?.dj_type?.map((type, i) => (
-                            <li key={i}>{type}</li>
-                          ))}
-                        </ul>
-                        <label className="mainLabel">Budget</label>
-                        {data?.dj_budget && <p>Under {data?.dj_budget}k</p>}
-                      </div>
-                    )}
+                    {data?.vendor_type?.includes("Photographer") &&
+                      (Array.isArray(data?.photographer_editing_style) ||
+                        Array.isArray(data?.photographer_shooting_style) ||
+                        data?.photographer_budget) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Photographer:</h4>
+                          <ul>
+                            {Array.isArray(data?.photographer_editing_style) &&
+                              data?.photographer_editing_style?.map(
+                                (style, i) => <li key={i}>{style}</li>
+                              )}
+                            {Array.isArray(data?.photographer_shooting_style) &&
+                              data?.photographer_shooting_style?.map(
+                                (style, i) => (
+                                  <li key={`shoot-${i}`}>{style}</li>
+                                )
+                              )}
+                          </ul>
+                          {data?.photographer_budget && (
+                            <>
+                              <label className="mainLabel">Budget</label>
+                              <p>Under {data?.photographer_budget}k</p>
+                            </>
+                          )}
+                        </div>
+                      )}
 
-                    {data?.vendor_type?.includes("Florist") && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Florist:</h4>
-                        {data?.florist_budget && (
-                          <p>Under {data?.florist_budget}k</p>
-                        )}
-                      </div>
-                    )}
+                    {data?.vendor_type?.includes("Videographer") &&
+                      (Array.isArray(data?.videography_type) ||
+                        Array.isArray(data?.videography_categories) ||
+                        data?.videography_budget) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Videographer:</h4>
+                          <ul>
+                            {Array.isArray(data?.videography_type) &&
+                              data?.videography_type?.map((type, i) => (
+                                <li key={i}>{type}</li>
+                              ))}
+                            {Array.isArray(data?.videography_categories) &&
+                              data?.videography_categories && (
+                                <li>{data?.Videography_categories}</li>
+                              )}
+                          </ul>
+                          {data?.videography_budget && (
+                            <>
+                              <label className="mainLabel">Budget</label>
+                              <p>Under {data?.videography_budget}k</p>
+                            </>
+                          )}
+                        </div>
+                      )}
+
+                    {data?.vendor_type?.includes("DJ") &&
+                      (Array.isArray(data?.dj_type) || data?.dj_budget) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">DJ:</h4>
+                          <ul>
+                            {Array.isArray(data?.dj_type) &&
+                              data?.dj_type?.map((type, i) => (
+                                <li key={i}>{type}</li>
+                              ))}
+                          </ul>
+                          {data?.dj_budget && (
+                            <>
+                              <label className="mainLabel">Budget</label>
+                              <p>Under {data?.dj_budget}k</p>
+                            </>
+                          )}
+                        </div>
+                      )}
+
+                    {data?.vendor_type?.includes("Florist") &&
+                      data?.florist_budget && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Florist:</h4>
+                          {data?.florist_budget && (
+                            <>
+                              <label className="mainLabel">Budget</label>
+                              <p>Under {data?.florist_budget}k</p>
+                            </>
+                          )}
+                        </div>
+                      )}
 
                     {data?.vendor_type?.includes(
                       "Wedding Planner / Coordinator"
-                    ) && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Planner:</h4>
-                        <ul>
-                          {data?.planner_type?.map((type, i) => (
-                            <li key={i}>{type}</li>
-                          ))}
-                        </ul>
-                        <label className="mainLabel">Budget</label>
-                        {data?.planner_budget && (
-                          <p>Under {data?.planner_budget}k</p>
-                        )}
-                      </div>
-                    )}
+                    ) &&
+                      (Array.isArray(data?.planner_type) ||
+                        data?.planner_budget) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Planner:</h4>
+                          <ul>
+                            {Array.isArray(data?.planner_type) &&
+                              data?.planner_type?.map((type, i) => (
+                                <li key={i}>{type}</li>
+                              ))}
+                          </ul>
+                          {data?.planner_budget && (
+                            <>
+                              <label className="mainLabel">Budget</label>
+                              <p>Under {data?.planner_budget}k</p>
+                            </>
+                          )}
+                        </div>
+                      )}
 
-                    {data?.vendor_type?.includes("Caterer") && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Catering:</h4>
-                        <ul>
-                          {data?.catering_type?.map((type, i) => (
-                            <li key={i}>{type}</li>
-                          ))}
-                          {data?.food_type?.map((food, i) => (
-                            <li key={`food-${i}`}>{food}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    {data?.vendor_type?.includes("Caterer") &&
+                      (Array.isArray(data?.catering_type) ||
+                        Array.isArray(data?.food_type)) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Catering:</h4>
+                          <ul>
+                            {Array.isArray(data?.catering_type) &&
+                              data?.catering_type?.map((type, i) => (
+                                <li key={i}>{type}</li>
+                              ))}
+                            {Array.isArray(data?.food_type) &&
+                              data?.food_type?.map((food, i) => (
+                                <li key={`food-${i}`}>{food}</li>
+                              ))}
+                          </ul>
+                        </div>
+                      )}
 
-                    {data?.vendor_type?.includes("Makeup Artist") && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Makeup Artist:</h4>
-                        <label className="mainLabel">Budget</label>
-                        {data?.makeupartist_budget && (
-                          <p>Under {data?.makeupartist_budget}k</p>
-                        )}
-                      </div>
-                    )}
+                    {data?.vendor_type?.includes("Makeup Artist") &&
+                      data?.makeupartist_budget && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Makeup Artist:</h4>
+                          <label className="mainLabel">Budget</label>
+                          {data?.makeupartist_budget && (
+                            <p>Under {data?.makeupartist_budget}k</p>
+                          )}
+                        </div>
+                      )}
 
-                    {data?.vendor_type?.includes("Hair Stylist") && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Hair Stylist:</h4>
-                        <ul>
-                          {data?.hairstylist_type?.map((type, i) => (
-                            <li key={i}>{type}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    {data?.vendor_type?.includes("Hair Stylist") &&
+                      Array.isArray(data?.hairstylist_type) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Hair Stylist:</h4>
+                          <ul>
+                            {data?.hairstylist_type?.map((type, i) => (
+                              <li key={i}>{type}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
                     {data?.vendor_type?.includes(
                       "Stationery Designer (invitations, menus, programs)"
-                    ) && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Stationery:</h4>
-                        <ul>
-                          {data?.stationary_type?.map((type, i) => (
-                            <li key={i}>{type}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    ) &&
+                      Array.isArray(data?.stationary_type) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Stationery:</h4>
+                          <ul>
+                            {data?.stationary_type?.map((type, i) => (
+                              <li key={i}>{type}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
                     {data?.vendor_type?.includes(
                       "Rental Company (tables, chairs, linens, etc.)"
-                    ) && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Rentals:</h4>
-                        <ul>
-                          {data?.rental_type?.map((type, i) => (
-                            <li key={i}>{type}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    ) &&
+                      Array.isArray(data?.rental_type) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Rentals:</h4>
+                          <ul>
+                            {data?.rental_type?.map((type, i) => (
+                              <li key={i}>{type}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
-                    {data?.vendor_type?.includes("Photo Booth / 360 Booth") && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Photo Booth / 360 Booth:</h4>
-                        <ul>
-                          {data?.photo_booth_type?.map((type, i) => (
-                            <li key={i}>{type}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    {data?.vendor_type?.includes("Photo Booth / 360 Booth") &&
+                      Array.isArray(data?.photo_booth_type) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Photo Booth / 360 Booth:</h4>
+                          <ul>
+                            {data?.photo_booth_type?.map((type, i) => (
+                              <li key={i}>{type}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
-                    {data?.vendor_type?.includes("Bakery (cake, desserts)") && (
-                      <div className="mb-3 col-lg-8 mt-3">
-                        <h4 className="fw-bold">Bakery (cake, desserts):</h4>
-                        <ul>
-                          {data?.bakery_type?.map((type, i) => (
-                            <li key={i}>{type}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    {data?.vendor_type?.includes("Bakery (cake, desserts)") &&
+                      Array.isArray(data?.bakery_type) && (
+                        <div className="mb-3 col-lg-8 mt-3">
+                          <h4 className="fw-bold">Bakery (cake, desserts):</h4>
+                          <ul>
+                            {data?.bakery_type?.map((type, i) => (
+                              <li key={i}>{type}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                   </div>
                 </div>
 
@@ -734,7 +779,7 @@ export const VendorDetail = () => {
                     <b>Portfolio Images/Videos</b>
                   </h3>
                   {data?.portfolio_images &&
-                    data?.portfolio_images.length > 0 &&
+                    data?.portfolio_images.length > 0 ?
                     data?.portfolio_images.map((media, _index) => {
                       const isFile = media instanceof File;
                       const fileType = isFile
@@ -774,7 +819,11 @@ export const VendorDetail = () => {
                           )}
                         </div>
                       );
-                    })}
+                    })
+                    : (
+                      <h5 className="">No Portfolio Image and Videos</h5>
+                    )
+                  }
                 </div>
               </div>
             </div>
