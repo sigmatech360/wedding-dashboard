@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./style.css";
 
 import { AuthLayout } from "../../Components/Layout/AuthLayout";
@@ -12,6 +12,7 @@ import {  getEchoInstance } from "../../echo";
 
 const AdminLogin = () => {
   const apiUrl = `${process.env.REACT_APP_BASE_URL}/login`;
+  const location = useLocation();
 
 
 
@@ -27,6 +28,7 @@ const AdminLogin = () => {
 
   useEffect(() => {
     document.title = "Wedding Concierge | Login";
+    
   }, []);
 
   const handleSubmit = async (event) => {
@@ -51,18 +53,30 @@ const AdminLogin = () => {
       const responseData = await response.json();
       if (responseData.success) {
 
-        dispatch(setLogin({ token: responseData.token, user: responseData?.data }));
         document.querySelector(".loaderBox").classList.add("d-none");
         if(responseData?.data?.role == 0 ){
+          dispatch(setLogin({ token: responseData.token, user: responseData?.data }));
           getEchoInstance(responseData.token);
 
           navigate("/dashboard");
+          toast.success(responseData?.message || 'Logged in Successfully1')
         }
         else{
-          navigate("/profile");
+          // navigate("/profile");
+          toast.error('Unauthorized User!')
+          // navigate(window.location.origin)
+          let origin = window.location.origin;
+          if(origin == 'http://localhost:3000'){
+
+            window.location.href = `http://localhost:5173/brittney-bay/login?user=${responseData.token}`
+          }
+          else{
+
+            window.location.href = window.location.origin+`/brittney-bay/login?user=${responseData.token}`;
+          }
+          
 
         }
-        toast.success(responseData?.message || 'Logged in Successfully1')
       } else {
         document.querySelector(".loaderBox").classList.add("d-none");
         toast.error("Invalid Credentials")
