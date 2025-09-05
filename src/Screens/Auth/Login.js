@@ -66,12 +66,14 @@ const AdminLogin = () => {
           toast.error('Unauthorized User!')
           // navigate(window.location.origin)
           let origin = window.location.origin;
-          if(origin == 'http://localhost:3000'){
+          if(responseData?.data?.role == 1){
 
-            window.location.href = `http://localhost:5173/brittney-bay/login?user=${responseData.token}`
+            // window.location.href = `http://localhost:5174/brittney-bay/login?vendor=${responseData.token}`
+            window.location.href = window.location.origin+`/brittney-bay/login?vendor=${responseData.token}`;
           }
           else{
 
+            // window.location.href = `http://localhost:5174/brittney-bay/login?user=${responseData.token}`
             window.location.href = window.location.origin+`/brittney-bay/login?user=${responseData.token}`;
           }
           
