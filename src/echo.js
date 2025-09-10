@@ -23,7 +23,7 @@ export function getEchoInstance(token) {
   //     },
   //   },
   // });
-  console.log("Echo initializing", token);
+  console.log("Echo initializing");
   echoInstance = new Echo({
     broadcaster: "pusher",
     key: "ebefd3bad1dde161a009",
@@ -38,7 +38,7 @@ export function getEchoInstance(token) {
       },
     },
   });
-  console.log("Echo initialized", token);
+  console.log("Echo initialized", echoInstance);
 
   return echoInstance;
 }

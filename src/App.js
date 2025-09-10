@@ -16,7 +16,7 @@ function App() {
   }, [dispatch]);
   return (
     <NotificationProvider>
-      <Notifications/>
+      {/* <Notifications/> */}
       <AdminRouter />
 
     </NotificationProvider>

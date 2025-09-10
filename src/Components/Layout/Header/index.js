@@ -50,9 +50,11 @@ export const Header = (props) => {
 
   const handleRedirect = () => {
     const token = localStorage.getItem("admintoken");
+    const device_token = localStorage.getItem("device_token");
     fetch(`${process.env.REACT_APP_BASE_URL}/logout`,
       {
         method: 'POST',
+        body: JSON.stringify({ device_token: device_token }),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -66,11 +68,10 @@ export const Header = (props) => {
       .then((data) => {
         console.log(data)
         dispatch(setLogout())
-        let echo = getEcho();
-        if(echo){
-          // echo.leave('admin');
-          echo.disconnect();
-        }
+        // let echo = getEcho();
+        // if(echo){
+        //   echo.disconnect();
+        // }
         navigate('/');
       })
       .catch((error) => {

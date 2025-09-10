@@ -46,15 +46,16 @@ const initialState = {
         state.isAuthenticated = true;
         localStorage.setItem('admintoken', token)
         localStorage.setItem('adminrole', user.role)
-        localStorage.setItem('adminuser', JSON.stringify(user))
+        // localStorage.setItem('adminuser', JSON.stringify(user))
         
       },
       setLogout(state) {
         state.user = null;
         state.isAuthenticated = false;
-        localStorage.removeItem('admintoken')
-        localStorage.removeItem('adminrole')
-        localStorage.removeItem('adminuser')
+        // localStorage.removeItem('admintoken')
+        // localStorage.removeItem('adminrole')
+        localStorage.clear();
+        // localStorage.removeItem('adminuser')
       },
       updateUser(state, action) {
         state.user = action.payload;

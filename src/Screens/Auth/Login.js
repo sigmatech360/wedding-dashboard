@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "../../store";
 import { setLogin } from "../../store/slices/user";
 import {  getEchoInstance } from "../../echo";
+import { requestPermission } from "../../permissionRequest";
 
 const AdminLogin = () => {
   const apiUrl = `${process.env.REACT_APP_BASE_URL}/login`;
@@ -38,8 +39,14 @@ const AdminLogin = () => {
     formDataMethod.append("email", formData.email);
     formDataMethod.append("password", formData.password);
     console.log(formData);
-
     document.querySelector(".loaderBox").classList.remove("d-none");
+    const {device_token} = await requestPermission();
+    if(device_token){
+      localStorage.setItem("device_token", device_token);
+      formDataMethod.append("device_token", device_token);
+
+    }
+
 
     // const apiUrl = 'https://custom.mystagingserver.site/Tim-WDLLC/public/api/user-login';
 
@@ -56,7 +63,7 @@ const AdminLogin = () => {
         document.querySelector(".loaderBox").classList.add("d-none");
         if(responseData?.data?.role == 0 ){
           dispatch(setLogin({ token: responseData.token, user: responseData?.data }));
-          getEchoInstance(responseData.token);
+          // getEchoInstance(responseData.token);
 
           navigate("/dashboard");
           toast.success(responseData?.message || 'Logged in Successfully1')

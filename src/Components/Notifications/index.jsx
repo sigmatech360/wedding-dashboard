@@ -14,9 +14,27 @@ const Notifications = () => {
   useEffect(() => {
     // if (!vendorId) return;
     // getEchoInstance();
+    console.log('user',user);
+    
 
     let echo = getEcho();
-    if (!echo) return;
+    if (!echo) {
+      // if(user.role == "0"){
+      //   let token = localStorage.getItem('admintoken');
+      //   getEchoInstance(token);
+        
+
+      //   console.log('Admin Echo not initialized, no echo instance');
+      // return
+      // }
+      // else{
+      //   console.log('NotAdmin Echo not initialized, no echo instance');
+        
+      //   return
+        
+      // }
+      return
+    };
     console.log("Subscribing to admin channel");
 
     const channel = echo.private("admin");

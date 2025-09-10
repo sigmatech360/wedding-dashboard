@@ -25,9 +25,11 @@ import { AddVendor } from "../Screens/VendorManagement/AddVendor";
 import { HiredVendors } from "../Screens/HiredVendors";
 import { FeedbackManagement } from "../Screens/FeedbackManagement";
 import FeedbackDetails from "../Screens/FeedbackManagement/FeedbackDetails";
+import useFirebaseMessaging from "../useFirebaseMessaging";
 
 
 export default function AdminRouter() {
+  useFirebaseMessaging();
   return (
     <BrowserRouter basename="/wedding-admin" >
       <Routes>
