@@ -26,7 +26,6 @@ export const NotificationProvider = ({ children }) => {
       const data = response.data;
       if (data.status) {
         setNotifications(data?.data);
-        console.log("notifications in context", data?.data);
         let unreadNotifications = 0;
         data?.data.forEach((item) => {
           if (!item.read_at) {

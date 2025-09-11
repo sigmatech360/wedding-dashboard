@@ -45,7 +45,6 @@ export const UserDetail = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         document.querySelector(".loaderBox").classList.add("d-none");
         SetUser(data.data);
       })

@@ -60,7 +60,6 @@ export const HiredVendors = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData?.slice(indexOfFirstItem, indexOfLastItem);
-  console.log("CURRENT ITEMS", currentItems);
 
   useEffect(() => {
     document.title = "Wedding Concierge | User Management";
@@ -80,7 +79,6 @@ export const HiredVendors = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("HIRED VENDORS data", data);
         document.querySelector(".loaderBox").classList.add("d-none");
         setData(data.data);
       })

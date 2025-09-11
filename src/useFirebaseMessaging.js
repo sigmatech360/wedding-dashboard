@@ -30,7 +30,7 @@ const useFirebaseMessaging = () => {
               borderRadius: "8px",
               color: "rgb(33 33 33)",
               boxShadow: "0px 0px 11px 5px rgb(0 0 0 / 12%)",
-              minWidth: "300px",
+              width: "350px",
               position: "relative",
             }}
             className="popupBody"

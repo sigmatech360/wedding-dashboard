@@ -69,7 +69,6 @@ export const VendorDetail = () => {
       })
       .then((data) => {
         document.querySelector(".loaderBox").classList.add("d-none");
-        console.log(data);
 
         setData(data.data);
       })

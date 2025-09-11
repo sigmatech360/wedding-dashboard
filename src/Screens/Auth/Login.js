@@ -29,7 +29,10 @@ const AdminLogin = () => {
 
   useEffect(() => {
     document.title = "Wedding Concierge | Login";
-    
+    let token = localStorage.getItem('admintoken');
+        if (token) {
+            navigate('/dashboard');
+        }
   }, []);
 
   const handleSubmit = async (event) => {

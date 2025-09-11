@@ -72,11 +72,9 @@ export const EditVendor = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("fetched user data", data.data);
         document.querySelector(".loaderBox").classList.add("d-none");
         setFormData(data.data);
         let user = data.data;
-        let initialVendors = [];
         if (user?.vendor_type) {
           setSelectedVendors(
             user.vendor_type.map((item) => ({
@@ -84,11 +82,6 @@ export const EditVendor = () => {
               value: item,
             }))
           );
-          initialVendors = user.vendor_type.map((item) => ({
-            label: item,
-            value: item,
-          }));
-          console.log("initialVendors", initialVendors);
         }
       })
       .catch((error) => {

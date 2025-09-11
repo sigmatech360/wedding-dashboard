@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 
 
@@ -12,21 +13,20 @@ const initialState = {
     'user/initialize',
     async (_, { dispatch }) => {
       const token = localStorage.getItem('admintoken');
-      const user = localStorage.getItem("adminuser");
+      // const user = localStorage.getItem("adminuser");
       
-      // const userResponse = await axios.get(`${import.meta.env.VITE_BASE_URL}/edit-profile`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
-      // const user = userResponse.data;
-      // console.log('Fetching user' , user);
+      if (token ) {
+        
+      const userResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/profile-edit`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const user = userResponse.data;
       
-      const parsedUser = JSON.parse(user); 
       
   
-      if (token && user) {
-        dispatch(setLogin({ token, user: parsedUser }));
+        dispatch(setLogin({ token, user: user.data }));
         // dispatch(setLogin(token));
       } else {
         dispatch(setLogout());
@@ -52,10 +52,11 @@ const initialState = {
       setLogout(state) {
         state.user = null;
         state.isAuthenticated = false;
-        // localStorage.removeItem('admintoken')
-        // localStorage.removeItem('adminrole')
-        localStorage.clear();
-        // localStorage.removeItem('adminuser')
+        localStorage.removeItem('admintoken')
+        localStorage.removeItem('adminrole')
+        localStorage.removeItem('device_token')
+        
+        
       },
       updateUser(state, action) {
         state.user = action.payload;

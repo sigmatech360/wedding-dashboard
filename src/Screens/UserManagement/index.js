@@ -88,7 +88,6 @@ export const UserManagement = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("user data", data);
         document.querySelector(".loaderBox").classList.add("d-none");
         setData(data.data);
       })

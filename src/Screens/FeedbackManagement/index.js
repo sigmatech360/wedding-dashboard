@@ -62,7 +62,6 @@ export const FeedbackManagement = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("aPPROVED ", data?.data);
         document.querySelector(".loaderBox").classList.add("d-none");
         toast.success("Feedback Approved Successfully");
         // setData(data?.data);
@@ -96,7 +95,6 @@ export const FeedbackManagement = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("rejected ", data?.data);
         document.querySelector(".loaderBox").classList.add("d-none");
         // setData(data?.data);
         Feedbacklist();
@@ -177,7 +175,6 @@ export const FeedbackManagement = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Feedback Data", data?.data);
         document.querySelector(".loaderBox").classList.add("d-none");
         setData(data?.data);
       })
@@ -311,13 +308,19 @@ export const FeedbackManagement = () => {
                               </div>
                             </td>
                             <td
-                              className={`${
-                                item?.status == "approved"
-                                  ? "text-success"
-                                  : "text-danger"
-                              } text-capitalize`}
+                              
                             >
+                              <p style={{fontSize:'16px'}}>
+
+                              <span className={`${
+                                item?.status == "approved"
+                                ? "bg-success"
+                                : item?.status == "rejected" ?"bg-danger":"bg-warning"
+                              } badge p-2 text-capitalize`}>
+
                               {item?.status}
+                              </span>
+                                </p>
                             </td>
                             <td>
                               {/* <Link to={`/vendor-management/vendor-details/${item?.id}`} className="btn btn-secondary py-1">View</Link> */}

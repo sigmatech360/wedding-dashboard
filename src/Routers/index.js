@@ -33,7 +33,7 @@ export default function AdminRouter() {
   return (
     <BrowserRouter basename="/wedding-admin" >
       <Routes>
-        <Route path="/" element={<AdminLogin />} />
+        <Route path="/" element={<ProtectedRoutes Components={Dashboard} />} />
         <Route path="/login" element={<AdminLogin />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/forget-password2" element={<ForgetPassword2 />} />
